@@ -166,3 +166,13 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ============ Foco programático sem contorno ============
+   Após o login (e ao trocar de tela) o portal move o foco para o conteúdo
+   principal, para leitores de tela. Essas áreas não são clicáveis, então
+   não mostram o anel de foco; botões e campos continuam com o anel no Tab. */
+[tabindex="-1"]:focus,
+[tabindex="-1"]:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
