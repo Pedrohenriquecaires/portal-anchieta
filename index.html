@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b0c0e" />
+  <meta
+    name="description"
+    content="Portal Anchieta — sistema acadêmico universitário com Material Design, dark mode e acessibilidade."
+  />
+  <title>Portal Anchieta — Sistema Acadêmico</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css?v=20261125-aurora" />
+</head>
+
+<body data-theme="dark">
+  <a class="skip-link" href="#conteudo-principal">Ir para o conteúdo principal</a>
+
+  <!-- ========== LOGIN ========== -->
+  <section class="login-screen" id="loginScreen" aria-labelledby="login-title">
+    <div class="login-bg" aria-hidden="true">
+      <span class="login-blob login-blob--1"></span>
+      <span class="login-blob login-blob--2"></span>
+      <span class="login-blob login-blob--3"></span>
+    </div>
+
+    <div class="login-layout">
+      <!-- Lado institucional: contexto e confiança antes da tarefa -->
+      <div class="login-hero">
+        <div class="login-panel__brand login-hero__brand">
+          <div class="brand-mark brand-mark--glow" aria-hidden="true">
+            <span class="material-symbols-outlined">school</span>
+          </div>
+          <div>
+            <strong class="brand-name">Portal Anchieta</strong>
+            <p class="login-hero__sub">Centro Universitário Anchieta</p>
+          </div>
+        </div>
+
+        <h2 class="login-hero__title">
+          Sua vida acadêmica,<br /><span class="text-gradient">clara e num só lugar.</span>
+        </h2>
+        <p class="login-hero__lede">
+          Notas, provas, atividades e frequência organizadas por prioridade —
+          para você saber o que fazer primeiro.
+        </p>
+
+        <ul class="stat-row" aria-label="Recursos do portal">
+          <li><span class="material-symbols-outlined" aria-hidden="true">grade</span>Boletim em tempo real</li>
+          <li><span class="material-symbols-outlined" aria-hidden="true">event_upcoming</span>Prazos em destaque</li>
+          <li><span class="material-symbols-outlined" aria-hidden="true">contrast</span>Tema escuro e 360px</li>
+        </ul>
+
+        <!-- Composição flutuante (decorativa): boletim + cálculo da média + lembrete de prova -->
+        <div class="login-visual" aria-hidden="true">
+          <div class="mock mock--boletim">
+            <div class="mock__bar">
+              <span class="mock__dots"><i></i><i></i><i></i></span>
+              <span class="mock__file">boletim · 2026.2</span>
+              <span class="material-symbols-outlined">content_copy</span>
+            </div>
+            <div class="mock__rows">
+              <div class="mock__row"><span>Material Design Framework</span><code>8,8</code><em class="ok">Aprovado</em></div>
+              <div class="mock__row"><span>UX Research e Prototipação</span><code>7,5</code><em class="ok">Aprovado</em></div>
+              <div class="mock__row"><span>Front-end Responsivo</span><code>5,9</code><em class="warn">Exame</em></div>
+            </div>
+          </div>
+
+          <div class="mock mock--code">
+            <div class="mock__bar">
+              <span class="mock__dots"><i></i><i></i><i></i></span>
+              <span class="mock__file">media.js</span>
+            </div>
+<pre class="mock__code"><span class="ln">1</span><span class="k">const</span> media = P1 * <span class="s">0.4</span> + P2 * <span class="s">0.6</span>;
+<span class="ln">2</span><span class="c">// 8,5 × 0,4 + 9,0 × 0,6 = 8,8</span>
+<span class="ln">3</span><span class="k">return</span> media &gt;= <span class="s">6</span> ? <span class="s">"Aprovado"</span> : <span class="s">"Exame"</span>;</pre>
+          </div>
+
+          <div class="mock mock--pill">
+            <span class="material-symbols-outlined">event_upcoming</span>
+            <div><strong>P2 · Material Design</strong><small>02 DEZ · 19:00 · Sala 214</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="login-panel card">
+        <div class="login-panel__brand login-panel__brand--compact">
+          <div class="brand-mark" aria-hidden="true">
+            <span class="material-symbols-outlined">school</span>
+          </div>
+          <div>
+            <strong class="brand-name">Portal Anchieta</strong>
+            <p class="muted">Centro Universitário Anchieta</p>
+          </div>
+        </div>
+
+        <div>
+          <h1 id="login-title" class="display-title login-title">Bem-vindo de volta</h1>
+          <p class="lede login-lede">
+            Professor e Aluno entram com <strong>RA + CPF</strong>.
+            A coordenação usa o usuário <strong>admin</strong>.
+          </p>
+        </div>
+
+        <div
+          class="alert alert--error"
+          id="loginError"
+          role="alert"
+          tabindex="-1"
+          hidden
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">error</span>
+          <div>
+            <strong>Não foi possível entrar.</strong>
+            <p id="loginErrorText">RA/usuário ou senha inválidos.</p>
+          </div>
+        </div>
+
+        <form class="login-form" id="loginForm" novalidate>
+          <label class="field">
+            <span class="field__label">RA ou usuário</span>
+            <span class="field__control">
+              <span class="material-symbols-outlined field__leading-icon" aria-hidden="true">badge</span>
+              <input
+                class="field__input field__input--icon"
+                id="loginUser"
+                name="user"
+                type="text"
+                autocomplete="username"
+                required
+                placeholder="Ex.: 2609681 ou admin"
+              />
+            </span>
+          </label>
+
+          <label class="field">
+            <span class="field__label">Senha (CPF ou senha da coordenação)</span>
+            <span class="field__control">
+              <span class="material-symbols-outlined field__leading-icon" aria-hidden="true">lock</span>
+              <input
+                class="field__input field__input--icon"
+                id="loginPass"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                required
+                placeholder="CPF só números · Admin@123"
+              />
+            </span>
+          </label>
+
+          <button class="btn btn--filled btn--lg login-submit" type="submit" id="loginSubmit">
+            <span class="btn__spinner" id="loginSpinner" hidden aria-hidden="true"></span>
+            <span id="loginLabel">Entrar no portal</span>
+            <span class="material-symbols-outlined btn__trail" aria-hidden="true">arrow_forward</span>
+          </button>
+        </form>
+
+        <div class="login-demos" aria-label="Acessos de demonstração">
+          <p class="login-demos__label">
+            <span class="material-symbols-outlined" aria-hidden="true">bolt</span>
+            Acesso rápido de demonstração
+          </p>
+          <div class="login-demos__grid">
+            <button
+              class="login-demo"
+              type="button"
+              data-demo-user="admin"
+              data-demo-pass="Admin@123"
+            >
+              <span class="login-demo__icon login-demo__icon--admin material-symbols-outlined" aria-hidden="true">account_balance</span>
+              <strong>Coordenador</strong>
+              <span class="login-demo__cred">admin / Admin@123</span>
+              <small>Usuários, turmas e visão institucional</small>
+            </button>
+            <button
+              class="login-demo"
+              type="button"
+              data-demo-user="230526"
+              data-demo-pass="23052600000"
+            >
+              <span class="login-demo__icon login-demo__icon--prof material-symbols-outlined" aria-hidden="true">co_present</span>
+              <strong>Professor Daniel</strong>
+              <span class="login-demo__cred">230526 / 23052600000</span>
+              <small>Notas, provas, atividades e frequência</small>
+            </button>
+            <button
+              class="login-demo"
+              type="button"
+              data-demo-user="2609681"
+              data-demo-pass="46580142898"
+            >
+              <span class="login-demo__icon login-demo__icon--aluno material-symbols-outlined" aria-hidden="true">school</span>
+              <strong>Aluno Gustavo</strong>
+              <span class="login-demo__cred">2609681 / 46580142898</span>
+              <small>Boletim, provas, atividades e faltas</small>
+            </button>
+          </div>
+          <button class="btn btn--tonal" type="button" id="openSlidesFromLogin">
+            <span class="material-symbols-outlined" aria-hidden="true">slideshow</span>
+            Ver apresentação Antes × Depois
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== APP SHELL ========== -->
+  <div class="app-shell" id="appShell" hidden>
+    <aside class="drawer" id="drawer" aria-label="Navegação principal">
+      <div class="drawer__brand">
+        <div class="brand-mark" aria-hidden="true">
+          <span class="material-symbols-outlined">school</span>
+        </div>
+        <div class="brand-copy">
+          <strong class="brand-name">Portal Anchieta</strong>
+          <span class="brand-tag">Sistema acadêmico</span>
+        </div>
+        <button
+          class="icon-btn drawer__close"
+          id="closeDrawer"
+          type="button"
+          aria-label="Fechar menu"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </div>
+
+      <p class="drawer__section-label" id="nav-label">Menu</p>
+
+      <nav aria-labelledby="nav-label">
+        <ul class="nav-list">
+          <!-- Aluno -->
+          <li data-roles="aluno">
+            <button class="nav-item" type="button" data-view="dashboard">
+              <span class="material-symbols-outlined" aria-hidden="true">dashboard</span>
+              <span>Dashboard</span>
+            </button>
+          </li>
+          <li data-roles="aluno">
+            <button class="nav-item" type="button" data-view="aluno-turmas">
+              <span class="material-symbols-outlined" aria-hidden="true">menu_book</span>
+              <span>Minhas turmas</span>
+              <span class="chip chip--soft" id="disciplinasCountChip">0</span>
+            </button>
+          </li>
+          <li data-roles="aluno">
+            <button class="nav-item" type="button" data-view="aluno-boletim">
+              <span class="material-symbols-outlined" aria-hidden="true">grade</span>
+              <span>Boletim / Notas</span>
+            </button>
+          </li>
+          <li data-roles="aluno">
+            <button class="nav-item" type="button" data-view="aluno-provas">
+              <span class="material-symbols-outlined" aria-hidden="true">quiz</span>
+              <span>Provas</span>
+            </button>
+          </li>
+          <li data-roles="aluno">
+            <button class="nav-item" type="button" data-view="aluno-atividades">
+              <span class="material-symbols-outlined" aria-hidden="true">assignment</span>
+              <span>Atividades</span>
+            </button>
+          </li>
+
+          <!-- Coordenador (admin) -->
+          <li data-roles="admin">
+            <button class="nav-item" type="button" data-view="admin-home">
+              <span class="material-symbols-outlined" aria-hidden="true">account_balance</span>
+              <span>Painel Coordenação</span>
+            </button>
+          </li>
+          <li data-roles="admin">
+            <button class="nav-item" type="button" data-view="usuarios">
+              <span class="material-symbols-outlined" aria-hidden="true">group</span>
+              <span>Usuários</span>
+              <span class="chip chip--soft" id="usersCountChip">0</span>
+            </button>
+          </li>
+          <li data-roles="admin">
+            <button class="nav-item" type="button" data-view="admin-turmas">
+              <span class="material-symbols-outlined" aria-hidden="true">class</span>
+              <span>Turmas</span>
+              <span class="chip chip--soft" id="adminTurmasCountChip">0</span>
+            </button>
+          </li>
+
+          <!-- Professor -->
+          <li data-roles="professor">
+            <button class="nav-item" type="button" data-view="prof-home">
+              <span class="material-symbols-outlined" aria-hidden="true">co_present</span>
+              <span>Painel Professor</span>
+            </button>
+          </li>
+          <li data-roles="professor">
+            <button class="nav-item" type="button" data-view="turmas">
+              <span class="material-symbols-outlined" aria-hidden="true">groups</span>
+              <span>Minhas turmas</span>
+            </button>
+          </li>
+          <li data-roles="professor">
+            <button class="nav-item" type="button" data-view="notas">
+              <span class="material-symbols-outlined" aria-hidden="true">grade</span>
+              <span>Lançar notas</span>
+            </button>
+          </li>
+          <li data-roles="professor">
+            <button class="nav-item" type="button" data-view="provas">
+              <span class="material-symbols-outlined" aria-hidden="true">quiz</span>
+              <span>Provas</span>
+            </button>
+          </li>
+          <li data-roles="professor">
+            <button class="nav-item" type="button" data-view="atividades">
+              <span class="material-symbols-outlined" aria-hidden="true">assignment</span>
+              <span>Atividades</span>
+            </button>
+          </li>
+          <li data-roles="professor">
+            <button class="nav-item" type="button" data-view="frequencia">
+              <span class="material-symbols-outlined" aria-hidden="true">event_busy</span>
+              <span>Frequência</span>
+            </button>
+          </li>
+
+          <!-- Compartilhadas -->
+          <li data-roles="admin,aluno,professor">
+            <button class="nav-item" type="button" data-view="perfil">
+              <span class="material-symbols-outlined" aria-hidden="true">person</span>
+              <span>Meu perfil</span>
+            </button>
+          </li>
+          <li data-roles="admin,aluno,professor">
+            <button class="nav-item" type="button" data-view="apresentacao">
+              <span class="material-symbols-outlined" aria-hidden="true">slideshow</span>
+              <span>Antes × Depois</span>
+            </button>
+          </li>
+          <li data-roles="admin,aluno">
+            <button class="nav-item" type="button" data-view="auditoria">
+              <span class="material-symbols-outlined" aria-hidden="true">fact_check</span>
+              <span>8 melhorias</span>
+              <span class="chip chip--soft">8/8</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="drawer__footer">
+        <div class="student-pill" aria-label="Usuário logado">
+          <div class="avatar" id="sidebarAvatar" aria-hidden="true">—</div>
+          <div>
+            <strong id="sidebarStudentName">—</strong>
+            <span id="sidebarRoleMeta">—</span>
+          </div>
+        </div>
+        <button class="nav-item nav-item--danger" type="button" id="logoutButton">
+          <span class="material-symbols-outlined" aria-hidden="true">logout</span>
+          <span>Sair</span>
+        </button>
+      </div>
+    </aside>
+
+    <button
+      class="drawer-scrim"
+      id="drawerScrim"
+      type="button"
+      aria-label="Fechar menu"
+      tabindex="-1"
+    ></button>
+
+    <div class="main-column">
+      <header class="app-bar" id="appBar">
+        <span class="scroll-progress" id="scrollProgress" aria-hidden="true"></span>
+        <div class="app-bar__start">
+          <button
+            class="icon-btn app-bar__menu"
+            id="openDrawer"
+            type="button"
+            aria-label="Abrir menu"
+            aria-controls="drawer"
+            aria-expanded="false"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+          </button>
+          <div>
+            <p class="eyebrow">
+              <span id="areaLabel">Área do aluno</span>
+              · <span data-semester>2026.2</span>
+            </p>
+            <h1 class="app-bar__title" id="pageTitle">Dashboard</h1>
+          </div>
+        </div>
+
+        <div class="app-bar__end">
+          <label class="field field--compact field--select" data-roles="aluno,professor">
+            <span class="visually-hidden">Semestre</span>
+            <span class="material-symbols-outlined field__leading" aria-hidden="true">calendar_month</span>
+            <select id="semesterSelect" aria-label="Selecionar semestre">
+              <option value="2026.2">2026.2</option>
+              <option value="2026.1">2026.1</option>
+              <option value="2025.2">2025.2</option>
+            </select>
+          </label>
+
+          <button
+            class="icon-btn"
+            id="themeToggle"
+            type="button"
+            aria-label="Ativar tema escuro"
+          >
+            <span class="material-symbols-outlined" id="themeIcon" aria-hidden="true">dark_mode</span>
+          </button>
+
+          <div class="notif-wrap">
+            <button
+              class="icon-btn icon-btn--badge"
+              id="notificationButton"
+              type="button"
+              aria-label="Notificações"
+              aria-expanded="false"
+              aria-controls="notifPanel"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">notifications</span>
+              <span class="badge-dot" id="notificationDot" hidden aria-hidden="true"></span>
+            </button>
+            <div class="notif-panel" id="notifPanel" hidden role="region" aria-label="Central de notificações">
+              <div class="notif-panel__head">
+                <strong>Notificações</strong>
+                <span class="chip chip--soft" id="notifCountChip">0</span>
+              </div>
+              <ul class="notif-list" id="notifList"></ul>
+            </div>
+          </div>
+
+          <button class="profile-chip" type="button" id="goToProfile" aria-label="Ir para meu perfil">
+            <span class="avatar avatar--sm" id="topbarAvatar" aria-hidden="true">—</span>
+            <span class="profile-chip__text">
+              <strong id="topbarStudentName">—</strong>
+              <small id="topbarRoleLabel">—</small>
+            </span>
+          </button>
+        </div>
+      </header>
+
+      <main id="conteudo-principal" class="content" tabindex="-1">
+        <!-- ========== 1. DASHBOARD (ALUNO) ========== -->
+        <section
+          class="view"
+          id="view-dashboard"
+          hidden
+          data-roles="aluno"
+          data-title="Dashboard"
+          aria-labelledby="dash-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="dash-heading" class="display-title">Olá</h2>
+              <p class="lede">
+                Acompanhe desempenho, turmas e prazos do semestre
+                <strong data-semester>2026.2</strong>.
+              </p>
+            </div>
+            <div class="page-intro__actions">
+              <button class="btn btn--tonal" type="button" id="refreshDashboard">
+                <span class="material-symbols-outlined" aria-hidden="true">refresh</span>
+                Atualizar
+              </button>
+              <button class="btn btn--tonal" type="button" data-view-jump="aluno-turmas">
+                <span class="material-symbols-outlined" aria-hidden="true">menu_book</span>
+                Ver turmas
+              </button>
+              <button class="btn btn--filled" type="button" data-view-jump="perfil">
+                <span class="material-symbols-outlined" aria-hidden="true">edit</span>
+                Editar perfil
+              </button>
+            </div>
+          </header>
+
+          <article class="card campus-hero">
+            <span class="campus-hero__orb campus-hero__orb--1" aria-hidden="true"></span>
+            <span class="campus-hero__orb campus-hero__orb--2" aria-hidden="true"></span>
+            <div>
+              <p class="eyebrow">Semestre 2026.2 · Situação regular</p>
+              <h3>Centro Universitário Anchieta</h3>
+              <p>
+                Boletim, provas, atividades e frequência em um só lugar —
+                no padrão dos portais universitários.
+              </p>
+            </div>
+            <div class="evidence-banner__actions">
+              <button class="btn btn--tonal" type="button" data-view-jump="aluno-boletim">
+                Ver boletim
+              </button>
+              <button class="btn btn--accent" type="button" data-view-jump="aluno-provas">
+                Ver provas
+                <span class="material-symbols-outlined btn__trail" aria-hidden="true">arrow_forward</span>
+              </button>
+            </div>
+          </article>
+
+          <div class="metrics" id="metricsGrid" aria-label="Indicadores acadêmicos">
+            <article class="card metric">
+              <div class="metric__icon" aria-hidden="true">
+                <span class="material-symbols-outlined">trending_up</span>
+              </div>
+              <p class="metric__label">Média geral</p>
+              <p class="metric__value" id="alunoMetricMedia">—</p>
+              <p class="metric__hint" id="alunoMetricMediaHint">Sem notas lançadas ainda</p>
+            </article>
+            <article class="card metric">
+              <div class="metric__icon metric__icon--secondary" aria-hidden="true">
+                <span class="material-symbols-outlined">auto_stories</span>
+              </div>
+              <p class="metric__label">Turmas</p>
+              <p class="metric__value" id="metricDisciplinas">0</p>
+              <p class="metric__hint" id="alunoMetricDiscHint">Nenhuma matrícula registrada</p>
+            </article>
+            <article class="card metric">
+              <div class="metric__icon metric__icon--warning" aria-hidden="true">
+                <span class="material-symbols-outlined">event_busy</span>
+              </div>
+              <p class="metric__label">Faltas</p>
+              <p class="metric__value" id="alunoMetricFaltas">0</p>
+              <p class="metric__hint" id="alunoMetricFaltasHint">Nenhuma falta registrada</p>
+            </article>
+            <article class="card metric">
+              <div class="metric__icon metric__icon--success" aria-hidden="true">
+                <span class="material-symbols-outlined">assignment</span>
+              </div>
+              <p class="metric__label">Atividades</p>
+              <p class="metric__value" id="alunoMetricAtividades">0</p>
+              <p class="metric__hint" id="alunoMetricAtivHint">Nenhuma atividade no momento</p>
+            </article>
+          </div>
+
+          <div class="split-grid">
+            <article class="card panel">
+              <div class="panel__head">
+                <div>
+                  <p class="eyebrow">Desempenho</p>
+                  <h3>Notas recentes</h3>
+                </div>
+                <span class="chip">Semestre <span data-semester>2026.2</span></span>
+              </div>
+              <div id="alunoChartBox">
+                <div class="empty-state empty-state--compact" role="status">
+                  <div class="empty-state__icon" aria-hidden="true">
+                    <span class="material-symbols-outlined">bar_chart</span>
+                  </div>
+                  <h3>Sem notas para exibir</h3>
+                  <p>O gráfico será preenchido quando o professor lançar notas.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="card panel">
+              <div class="panel__head">
+                <div>
+                  <p class="eyebrow">Agenda</p>
+                  <h3>Próximas atividades</h3>
+                </div>
+              </div>
+              <ul class="event-list" id="alunoAgendaList">
+                <li class="muted" style="list-style:none;padding:8px 0">
+                  Nenhuma atividade com prazo no momento.
+                </li>
+              </ul>
+            </article>
+          </div>
+
+          <article class="card panel">
+            <div class="panel__head">
+              <div>
+                <p class="eyebrow">Atalhos</p>
+                <h3>Ações rápidas</h3>
+              </div>
+            </div>
+            <div class="quick-grid">
+              <button class="quick-action" type="button" data-action="segunda-via">
+                <span class="material-symbols-outlined" aria-hidden="true">receipt_long</span>
+                <strong>2ª via de boleto</strong>
+                <small>Área financeira</small>
+              </button>
+              <button class="quick-action" type="button" data-action="grade">
+                <span class="material-symbols-outlined" aria-hidden="true">calendar_view_week</span>
+                <strong>Grade de horários</strong>
+                <small>Aulas da semana</small>
+              </button>
+              <button class="quick-action" type="button" data-action="documentos">
+                <span class="material-symbols-outlined" aria-hidden="true">description</span>
+                <strong>Documentos</strong>
+                <small>Atestados e declarações</small>
+              </button>
+              <button class="quick-action" type="button" data-action="suporte">
+                <span class="material-symbols-outlined" aria-hidden="true">support_agent</span>
+                <strong>Suporte</strong>
+                <small>Central de atendimento</small>
+              </button>
+            </div>
+          </article>
+        </section>
+
+        <!-- ========== 2. ALUNO TURMAS ========== -->
+        <section
+          class="view"
+          id="view-aluno-turmas"
+          hidden
+          data-roles="aluno"
+          data-title="Minhas turmas"
+          aria-labelledby="aluno-turmas-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="aluno-turmas-heading" class="display-title">Minhas turmas</h2>
+              <p class="lede">
+                Turmas em que você está matriculado. Notas e faltas vêm do lançamento do professor.
+              </p>
+            </div>
+          </header>
+
+          <div class="disc-list" id="alunoTurmasList" aria-live="polite"></div>
+
+          <div class="empty-state" id="alunoTurmasEmpty" hidden>
+            <div class="empty-state__icon" aria-hidden="true">
+              <span class="material-symbols-outlined">menu_book</span>
+            </div>
+            <h3>Nenhuma turma vinculada</h3>
+            <p>
+              Aguarde o professor matricular você em uma turma criada pelo Admin.
+            </p>
+          </div>
+        </section>
+
+        <!-- ========== 3. ALUNO BOLETIM ========== -->
+        <section
+          class="view"
+          id="view-aluno-boletim"
+          hidden
+          data-roles="aluno"
+          data-title="Boletim / Notas"
+          aria-labelledby="aluno-boletim-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="aluno-boletim-heading" class="display-title">Boletim acadêmico</h2>
+              <p class="lede">
+                Notas por disciplina (P1, P2, trabalhos e atividades), média ponderada e situação.
+              </p>
+            </div>
+          </header>
+
+          <div id="alunoBoletimBox" class="disc-list" aria-live="polite"></div>
+
+          <div class="empty-state" id="alunoBoletimEmpty" hidden>
+            <div class="empty-state__icon" aria-hidden="true">
+              <span class="material-symbols-outlined">grade</span>
+            </div>
+            <h3>Sem boletim ainda</h3>
+            <p>Quando você for vinculado a uma turma, as notas aparecerão aqui.</p>
+          </div>
+        </section>
+
+        <!-- ========== 3b. ALUNO PROVAS ========== -->
+        <section
+          class="view"
+          id="view-aluno-provas"
+          hidden
+          data-roles="aluno"
+          data-title="Provas"
+          aria-labelledby="aluno-provas-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="aluno-provas-heading" class="display-title">Provas e avaliações</h2>
+              <p class="lede">Calendário de provas das suas turmas — agendadas e já aplicadas.</p>
+            </div>
+          </header>
+
+          <div id="alunoProvasList" class="disc-list" aria-live="polite"></div>
+
+          <div class="empty-state" id="alunoProvasEmpty" hidden>
+            <div class="empty-state__icon" aria-hidden="true">
+              <span class="material-symbols-outlined">quiz</span>
+            </div>
+            <h3>Nenhuma prova agendada</h3>
+            <p>As provas publicadas pelos professores aparecem nesta lista.</p>
+          </div>
+        </section>
+
+        <!-- ========== 3c. ALUNO ATIVIDADES ========== -->
+        <section
+          class="view"
+          id="view-aluno-atividades"
+          hidden
+          data-roles="aluno"
+          data-title="Atividades"
+          aria-labelledby="aluno-ativ-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="aluno-ativ-heading" class="display-title">Atividades</h2>
+              <p class="lede">Publique entregas e acompanhe prazos das suas turmas.</p>
+            </div>
+          </header>
+
+          <div id="alunoAtividadesList" class="disc-list" aria-live="polite"></div>
+
+          <div class="empty-state" id="alunoAtividadesEmpty" hidden>
+            <div class="empty-state__icon" aria-hidden="true">
+              <span class="material-symbols-outlined">assignment</span>
+            </div>
+            <h3>Nenhuma atividade</h3>
+            <p>Quando o professor publicar atividades, elas aparecem aqui.</p>
+          </div>
+        </section>
+
+        <!-- ========== 4. PERFIL ========== -->
+        <section
+          class="view"
+          id="view-perfil"
+          hidden
+          data-roles="admin,aluno,professor"
+          data-title="Meu perfil"
+          aria-labelledby="perfil-heading"
+        >
+          <header class="page-intro page-intro--narrow">
+            <div>
+              <h2 id="perfil-heading" class="display-title">Editar perfil</h2>
+              <p class="lede">
+                Atualize seus dados pessoais. Campos obrigatórios são validados antes do envio.
+              </p>
+            </div>
+          </header>
+
+          <form class="card form-card" id="perfilForm" novalidate>
+            <div class="form-card__head">
+              <div class="avatar avatar--lg" aria-hidden="true" id="perfilAvatar">—</div>
+              <div>
+                <h3>Dados da conta</h3>
+                <p class="muted" id="perfilMeta">—</p>
+              </div>
+            </div>
+
+            <div
+              class="alert alert--error"
+              id="perfilError"
+              role="alert"
+              tabindex="-1"
+              hidden
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">error</span>
+              <div>
+                <strong>Não foi possível salvar.</strong>
+                <p>Tente novamente em instantes.</p>
+              </div>
+            </div>
+
+            <div class="field-grid">
+              <label class="field">
+                <span class="field__label">Nome completo</span>
+                <input
+                  class="field__input"
+                  id="nomeInput"
+                  name="nome"
+                  type="text"
+                  autocomplete="name"
+                  required
+                  aria-describedby="nomeHelp nomeError"
+                />
+                <span class="field__help" id="nomeHelp">Como aparece no portal e nos documentos.</span>
+                <span class="field__error" id="nomeError" hidden>Informe o nome completo.</span>
+              </label>
+
+              <label class="field">
+                <span class="field__label">E-mail institucional</span>
+                <input
+                  class="field__input"
+                  id="emailInput"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  required
+                  aria-describedby="emailError"
+                />
+                <span class="field__error" id="emailError" hidden>Informe um e-mail válido.</span>
+              </label>
+
+              <label class="field">
+                <span class="field__label">Telefone</span>
+                <input
+                  class="field__input"
+                  id="telefoneInput"
+                  name="telefone"
+                  type="tel"
+                  autocomplete="tel"
+                />
+              </label>
+
+              <label class="field">
+                <span class="field__label">Curso</span>
+                <input
+                  class="field__input"
+                  id="cursoInput"
+                  name="curso"
+                  type="text"
+                  value="Design de Interfaces"
+                  readonly
+                />
+              </label>
+            </div>
+
+            <label class="check-row">
+              <input type="checkbox" id="simularErro" />
+              <span>Simular erro no salvamento (Desafio B)</span>
+            </label>
+
+            <div class="form-actions">
+              <button class="btn btn--text" type="button" id="resetPerfil">Cancelar</button>
+              <button class="btn btn--filled" type="submit" id="salvarPerfil">
+                <span class="btn__spinner" id="salvarSpinner" hidden aria-hidden="true"></span>
+                <span class="btn__label" id="salvarLabel">Salvar alterações</span>
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- ========== 5. AUDITORIA ========== -->
+        <section
+          class="view"
+          id="view-auditoria"
+          hidden
+          data-roles="admin,aluno"
+          data-title="8 melhorias"
+          aria-labelledby="audit-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="audit-heading" class="display-title">8 melhorias Material</h2>
+              <p class="lede">
+                Evidências clicáveis das melhorias + tabela da auditoria (Etapa 1) da versão anterior.
+              </p>
+            </div>
+          </header>
+
+          <div class="improve-grid" aria-label="Oito melhorias implementadas">
+            <article class="card improve-card">
+              <span class="improve-card__num">01</span>
+              <h3>Componentes Material</h3>
+              <p>AppBar, Drawer, Button, Card, TextField, Chip, Avatar, Dialog, Snackbar.</p>
+              <p class="improve-card__where">Onde: toda a interface</p>
+            </article>
+            <article class="card improve-card">
+              <span class="improve-card__num">02</span>
+              <h3>Hierarquia visual</h3>
+              <p>Intro clara, tipografia acadêmica e um propósito por seção.</p>
+              <p class="improve-card__where">Onde: Dashboard vs. pasta <code>antes/</code></p>
+            </article>
+            <article class="card improve-card">
+              <span class="improve-card__num">03</span>
+              <h3>Feedback (Snackbar)</h3>
+              <p>Confirmações de ação com Snackbar Material.</p>
+              <p class="improve-card__where">Onde: botão abaixo</p>
+              <button class="btn btn--tonal" type="button" id="demoSnackbarAudit">
+                Testar Snackbar
+              </button>
+            </article>
+            <article class="card improve-card">
+              <span class="improve-card__num">04</span>
+              <h3>Loading</h3>
+              <p>Spinner no botão Salvar do perfil e no Atualizar do Dashboard.</p>
+              <p class="improve-card__where">Onde: Perfil · Dashboard</p>
+              <button class="btn btn--tonal" type="button" data-view-jump="perfil">
+                Ir ao perfil
+              </button>
+            </article>
+            <article class="card improve-card">
+              <span class="improve-card__num">05</span>
+              <h3>Responsividade</h3>
+              <p>Layout estável a partir de ~360px com drawer e grids empilhados.</p>
+              <p class="improve-card__where">Onde: DevTools 360×800</p>
+              <button class="btn btn--tonal" type="button" id="showResponsiveTip">
+                Ver dica
+              </button>
+            </article>
+            <article class="card improve-card">
+              <span class="improve-card__num">06</span>
+              <h3>Dark Mode</h3>
+              <p>Tema claro/escuro por tokens semânticos (sem cores fixas nas views).</p>
+              <p class="improve-card__where">Onde: ícone na AppBar</p>
+              <button class="btn btn--tonal" type="button" id="demoThemeFromAudit">
+                Alternar tema
+              </button>
+            </article>
+            <article class="card improve-card">
+              <span class="improve-card__num">07</span>
+              <h3>Acessibilidade</h3>
+              <p>Skip link, labels, foco, ESC e navegação por teclado.</p>
+              <p class="improve-card__where">Onde: painel abaixo</p>
+              <button class="btn btn--tonal" type="button" id="showA11yTip">
+                Ver dicas a11y
+              </button>
+            </article>
+            <article class="card improve-card">
+              <span class="improve-card__num">08</span>
+              <h3>Estados avançados</h3>
+              <p>Empty state, erro simulado e Dialog de exclusão (desafios).</p>
+              <p class="improve-card__where">Onde: turmas vazias · Perfil · Dialog</p>
+            </article>
+          </div>
+
+          <article class="card panel" id="a11yTipsPanel">
+            <div class="panel__head">
+              <div>
+                <p class="eyebrow">Melhoria 07</p>
+                <h3>Roteiro rápido de acessibilidade</h3>
+              </div>
+            </div>
+            <ol class="checklist checklist--ordered">
+              <li>Use <code>Tab</code> / <code>Shift+Tab</code> para percorrer botões e campos.</li>
+              <li>Ative o skip link com Tab no topo da página.</li>
+              <li>Feche drawer e dialogs com <code>Esc</code>.</li>
+              <li>Confira contraste no tema escuro (ícone na AppBar).</li>
+            </ol>
+          </article>
+
+          <div class="card table-card">
+            <div class="table-wrap">
+              <table class="audit-table">
+                <caption class="visually-hidden">Problemas de UX e soluções propostas</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Problema encontrado</th>
+                    <th scope="col">Por que é um problema?</th>
+                    <th scope="col">Solução proposta</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Hierarquia visual fraca e hero genérico</td>
+                    <td>Título, métricas e CTAs competiam; o aluno não sabia o que fazer primeiro.</td>
+                    <td>Tipografia acadêmica, intro clara, ações primária/tonal e cards com um papel cada.</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Ícones e botões sem padrão Material</td>
+                    <td>Símbolos ad-hoc e estilos inconsistentes aumentavam esforço cognitivo.</td>
+                    <td>Material Symbols + botões filled/tonal/text, campos, chips, dialog e snackbar.</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Feedback incompleto (só toast genérico)</td>
+                    <td>Ações importantes não comunicavam loading, erro ou confirmação destrutiva.</td>
+                    <td>Snackbar de sucesso, Alert de erro, spinner no botão e Dialog de exclusão.</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>Layout pouco confiável em ~360px</td>
+                    <td>Topbar e grids quebravam; ações saíam da área útil no smartphone.</td>
+                    <td>Drawer responsivo, tipografia fluida, grids 1 coluna e testes em 360×800.</td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>Cores fixas / tema purple genérico</td>
+                    <td>Cores hardcoded e visual “SaaS roxo” prejudicavam dark mode e identidade acadêmica.</td>
+                    <td>Tokens semânticos (surface/text/primary), teal institucional e dark mode via tema.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 6. ADMIN HOME ========== -->
+        <section
+          class="view"
+          id="view-admin-home"
+          hidden
+          data-roles="admin"
+          data-title="Painel Coordenação"
+          aria-labelledby="admin-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="admin-heading" class="display-title">Painel da coordenação</h2>
+              <p class="lede">
+                Cargo <strong>Coordenador</strong>: gerencie professores, alunos e turmas —
+                como no portal acadêmico institucional.
+              </p>
+            </div>
+            <div class="page-intro__actions">
+              <button class="btn btn--tonal" type="button" data-view-jump="usuarios">
+                <span class="material-symbols-outlined" aria-hidden="true">person_add</span>
+                Gerenciar usuários
+              </button>
+              <button class="btn btn--filled" type="button" data-view-jump="admin-turmas">
+                <span class="material-symbols-outlined" aria-hidden="true">class</span>
+                Gerenciar turmas
+              </button>
+            </div>
+          </header>
+
+          <div class="metrics" aria-label="Resumo administrativo">
+            <article class="card metric">
+              <div class="metric__icon" aria-hidden="true">
+                <span class="material-symbols-outlined">group</span>
+              </div>
+              <p class="metric__label">Usuários</p>
+              <p class="metric__value" id="adminMetricUsers">0</p>
+              <p class="metric__hint">Cadastrados no portal</p>
+            </article>
+            <article class="card metric">
+              <div class="metric__icon metric__icon--secondary" aria-hidden="true">
+                <span class="material-symbols-outlined">co_present</span>
+              </div>
+              <p class="metric__label">Professores</p>
+              <p class="metric__value" id="adminMetricProfs">0</p>
+              <p class="metric__hint">Cargo Professor</p>
+            </article>
+            <article class="card metric">
+              <div class="metric__icon metric__icon--success" aria-hidden="true">
+                <span class="material-symbols-outlined">school</span>
+              </div>
+              <p class="metric__label">Alunos</p>
+              <p class="metric__value" id="adminMetricAlunos">0</p>
+              <p class="metric__hint">Cargo Aluno</p>
+            </article>
+            <article class="card metric">
+              <div class="metric__icon metric__icon--warning" aria-hidden="true">
+                <span class="material-symbols-outlined">admin_panel_settings</span>
+              </div>
+              <p class="metric__label">Coordenação</p>
+              <p class="metric__value" id="adminMetricAdmins">0</p>
+              <p class="metric__hint">Acesso institucional</p>
+            </article>
+          </div>
+
+          <article class="card panel">
+            <div class="panel__head">
+              <div>
+                <p class="eyebrow">Permissões</p>
+                <h3>O que cada cargo pode fazer</h3>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="audit-table">
+                <thead>
+                  <tr>
+                    <th>Recurso</th>
+                    <th>Coordenador</th>
+                    <th>Professor</th>
+                    <th>Aluno</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Gerenciar usuários</td>
+                    <td>Sim</td>
+                    <td>Não</td>
+                    <td>Não</td>
+                  </tr>
+                  <tr>
+                    <td>Criar Professor / Aluno</td>
+                    <td>Sim</td>
+                    <td>Não</td>
+                    <td>Não</td>
+                  </tr>
+                  <tr>
+                    <td>Criar e remover turmas</td>
+                    <td>Sim</td>
+                    <td>Não</td>
+                    <td>Não</td>
+                  </tr>
+                  <tr>
+                    <td>Provas, notas, atividades e faltas</td>
+                    <td>Não</td>
+                    <td>Sim</td>
+                    <td>Não</td>
+                  </tr>
+                  <tr>
+                    <td>Boletim, entregar atividades, ver provas</td>
+                    <td>Não</td>
+                    <td>Não</td>
+                    <td>Sim</td>
+                  </tr>
+                  <tr>
+                    <td>Meu perfil</td>
+                    <td>Sim</td>
+                    <td>Sim</td>
+                    <td>Sim</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <!-- ========== 7. USUÁRIOS ========== -->
+        <section
+          class="view"
+          id="view-usuarios"
+          hidden
+          data-roles="admin"
+          data-title="Usuários"
+          aria-labelledby="users-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="users-heading" class="display-title">Usuários</h2>
+              <p class="lede">
+                Crie contas de <strong>Professor</strong> e <strong>Aluno</strong> com Nome, RA e CPF.
+                A senha passa a ser o CPF (somente números).
+              </p>
+            </div>
+            <div class="page-intro__actions">
+              <button class="btn btn--filled" type="button" id="openCreateUser">
+                <span class="material-symbols-outlined" aria-hidden="true">person_add</span>
+                Novo usuário
+              </button>
+            </div>
+          </header>
+
+          <div class="card table-card">
+            <div class="table-wrap">
+              <table class="audit-table" id="usersTable">
+                <caption class="visually-hidden">Lista de usuários do portal</caption>
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>RA</th>
+                    <th>Cargo</th>
+                    <th>CPF</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 8. ADMIN TURMAS ========== -->
+        <section
+          class="view"
+          id="view-admin-turmas"
+          hidden
+          data-roles="admin"
+          data-title="Turmas"
+          aria-labelledby="admin-turmas-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="admin-turmas-heading" class="display-title">Turmas</h2>
+              <p class="lede">
+                Crie turmas e vincule um professor. Depois, o professor matricula alunos e lança notas.
+              </p>
+            </div>
+            <div class="page-intro__actions">
+              <button class="btn btn--filled" type="button" id="openCreateTurma">
+                <span class="material-symbols-outlined" aria-hidden="true">add</span>
+                Nova turma
+              </button>
+            </div>
+          </header>
+
+          <div class="card table-card">
+            <div class="table-wrap">
+              <table class="audit-table">
+                <caption class="visually-hidden">Turmas administrativas</caption>
+                <thead>
+                  <tr>
+                    <th>Disciplina</th>
+                    <th>Código</th>
+                    <th>Professor</th>
+                    <th>Horário</th>
+                    <th>Alunos</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="adminTurmasTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="empty-state" id="adminTurmasEmpty" hidden>
+            <div class="empty-state__icon" aria-hidden="true">
+              <span class="material-symbols-outlined">class</span>
+            </div>
+            <h3>Nenhuma turma cadastrada</h3>
+            <p>Use <strong>Nova turma</strong> acima para vincular um professor do cadastro.</p>
+          </div>
+        </section>
+
+        <!-- ========== 9. PROF HOME ========== -->
+        <section
+          class="view"
+          id="view-prof-home"
+          hidden
+          data-roles="professor"
+          data-title="Painel Professor"
+          aria-labelledby="prof-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="prof-heading" class="display-title">Painel do professor</h2>
+              <p class="lede">
+                Gerencie turmas, vincule alunos, lance notas, publique atividades e registre faltas.
+              </p>
+            </div>
+            <div class="page-intro__actions">
+              <button class="btn btn--tonal" type="button" data-view-jump="turmas">Minhas turmas</button>
+              <button class="btn btn--tonal" type="button" data-view-jump="atividades">Atividades</button>
+              <button class="btn btn--filled" type="button" data-view-jump="notas">Lançar notas</button>
+            </div>
+          </header>
+
+          <div class="metrics" aria-label="Resumo do professor">
+            <article class="card metric">
+              <div class="metric__icon" aria-hidden="true">
+                <span class="material-symbols-outlined">groups</span>
+              </div>
+              <p class="metric__label">Turmas</p>
+              <p class="metric__value" id="profMetricTurmas">0</p>
+              <p class="metric__hint">Vinculadas a você</p>
+            </article>
+            <article class="card metric">
+              <div class="metric__icon metric__icon--secondary" aria-hidden="true">
+                <span class="material-symbols-outlined">school</span>
+              </div>
+              <p class="metric__label">Alunos</p>
+              <p class="metric__value" id="profMetricAlunos">0</p>
+              <p class="metric__hint">Matriculados nas suas turmas</p>
+            </article>
+            <article class="card metric">
+              <div class="metric__icon metric__icon--success" aria-hidden="true">
+                <span class="material-symbols-outlined">assignment</span>
+              </div>
+              <p class="metric__label">Atividades</p>
+              <p class="metric__value" id="profMetricAtividades">0</p>
+              <p class="metric__hint">Publicadas</p>
+            </article>
+            <article class="card metric">
+              <div class="metric__icon metric__icon--warning" aria-hidden="true">
+                <span class="material-symbols-outlined">event_busy</span>
+              </div>
+              <p class="metric__label">Faltas</p>
+              <p class="metric__value" id="profMetricFaltas">0</p>
+              <p class="metric__hint">Registradas</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- ========== 10. TURMAS (PROFESSOR) ========== -->
+        <section
+          class="view"
+          id="view-turmas"
+          hidden
+          data-roles="professor"
+          data-title="Minhas turmas"
+          aria-labelledby="turmas-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="turmas-heading" class="display-title">Minhas turmas</h2>
+              <p class="lede">
+                Exclusivo do Professor — vincule alunos cadastrados pelo Admin às suas turmas.
+              </p>
+            </div>
+          </header>
+
+          <div class="disc-list" id="turmasList" aria-live="polite"></div>
+
+          <div class="empty-state" id="profTurmasEmpty" hidden>
+            <div class="empty-state__icon" aria-hidden="true">
+              <span class="material-symbols-outlined">groups</span>
+            </div>
+            <h3>Nenhuma turma atribuída</h3>
+            <p>Peça ao Admin para criar uma turma e vincular você como professor.</p>
+          </div>
+        </section>
+
+        <!-- ========== 11. NOTAS ========== -->
+        <section
+          class="view"
+          id="view-notas"
+          hidden
+          data-roles="professor"
+          data-title="Lançar notas"
+          aria-labelledby="notas-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="notas-heading" class="display-title">Lançar notas</h2>
+              <p class="lede">
+                Selecione turma e aluno vinculados. O salvamento mostra loading e Snackbar.
+              </p>
+            </div>
+          </header>
+
+          <form class="card form-card" id="notasForm" novalidate>
+            <div
+              class="alert alert--error"
+              id="notaError"
+              role="alert"
+              tabindex="-1"
+              hidden
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">error</span>
+              <div>
+                <strong>Não foi possível salvar a nota.</strong>
+                <p id="notaErrorText">Revise os campos e tente novamente.</p>
+              </div>
+            </div>
+
+            <div class="field-grid">
+              <label class="field">
+                <span class="field__label">Turma</span>
+                <select class="field__input" id="notaTurma" required>
+                  <option value="">Selecione uma turma</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="field__label">Aluno</span>
+                <select class="field__input" id="notaAluno" required>
+                  <option value="">Selecione um aluno</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="field__label">Tipo de avaliação</span>
+                <select class="field__input" id="notaTipo" required>
+                  <option value="P1">P1 — Prova 1</option>
+                  <option value="P2">P2 — Prova 2</option>
+                  <option value="Trabalho">Trabalho</option>
+                  <option value="Atividade">Atividade</option>
+                  <option value="Prova Extra">Prova Extra</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="field__label">Nota (0–10)</span>
+                <input
+                  class="field__input"
+                  id="notaValor"
+                  type="number"
+                  min="0"
+                  max="10"
+                  step="0.1"
+                  required
+                />
+              </label>
+              <label class="field" style="grid-column: 1 / -1">
+                <span class="field__label">Observação (opcional)</span>
+                <input class="field__input" id="notaObs" type="text" maxlength="120" />
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn btn--filled" type="submit" id="salvarNota">
+                <span class="btn__spinner" id="notaSpinner" hidden aria-hidden="true"></span>
+                <span id="notaLabel">Salvar nota</span>
+              </button>
+            </div>
+          </form>
+
+          <article class="card panel">
+            <div class="panel__head">
+              <div>
+                <p class="eyebrow">Histórico</p>
+                <h3>Notas lançadas</h3>
+              </div>
+            </div>
+            <div id="notasHistorico">
+              <p class="muted">Nenhuma nota lançada ainda.</p>
+            </div>
+          </article>
+        </section>
+
+        <!-- ========== 11b. PROVAS (PROFESSOR) ========== -->
+        <section
+          class="view"
+          id="view-provas"
+          hidden
+          data-roles="professor"
+          data-title="Provas"
+          aria-labelledby="provas-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="provas-heading" class="display-title">Provas</h2>
+              <p class="lede">Agende P1/P2 e avaliações. O aluno vê no calendário de provas.</p>
+            </div>
+          </header>
+
+          <form class="card form-card" id="provaForm" novalidate>
+            <div class="field-grid">
+              <label class="field">
+                <span class="field__label">Turma</span>
+                <select class="field__input" id="provaTurma" required>
+                  <option value="">Selecione uma turma</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="field__label">Data</span>
+                <input class="field__input" id="provaData" type="date" required />
+              </label>
+              <label class="field">
+                <span class="field__label">Peso</span>
+                <input class="field__input" id="provaPeso" type="number" min="1" max="10" value="3" required />
+              </label>
+              <label class="field">
+                <span class="field__label">Status</span>
+                <select class="field__input" id="provaStatus" required>
+                  <option value="agendada">Agendada</option>
+                  <option value="aplicada">Aplicada</option>
+                  <option value="cancelada">Cancelada</option>
+                </select>
+              </label>
+              <label class="field" style="grid-column: 1 / -1">
+                <span class="field__label">Título</span>
+                <input class="field__input" id="provaTitulo" type="text" required maxlength="100" placeholder="Ex.: P1 — Fundamentos Material" />
+              </label>
+              <label class="field" style="grid-column: 1 / -1">
+                <span class="field__label">Descrição</span>
+                <textarea class="field__input" id="provaDesc" rows="3" maxlength="400"></textarea>
+              </label>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn--filled" type="submit">
+                <span class="material-symbols-outlined" aria-hidden="true">quiz</span>
+                Agendar prova
+              </button>
+            </div>
+          </form>
+
+          <div id="provasListProf" class="disc-list" aria-live="polite"></div>
+        </section>
+
+        <!-- ========== 12. ATIVIDADES (PROFESSOR) ========== -->
+        <section
+          class="view"
+          id="view-atividades"
+          hidden
+          data-roles="professor"
+          data-title="Atividades"
+          aria-labelledby="atividades-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="atividades-heading" class="display-title">Atividades</h2>
+              <p class="lede">Publique atividades com prazo para as turmas sob sua responsabilidade.</p>
+            </div>
+          </header>
+
+          <form class="card form-card" id="atividadeForm" novalidate>
+            <div class="field-grid">
+              <label class="field">
+                <span class="field__label">Turma</span>
+                <select class="field__input" id="atividadeTurma" required>
+                  <option value="">Selecione uma turma</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="field__label">Prazo</span>
+                <input class="field__input" id="atividadePrazo" type="date" />
+              </label>
+              <label class="field" style="grid-column: 1 / -1">
+                <span class="field__label">Título</span>
+                <input class="field__input" id="atividadeTitulo" type="text" required maxlength="80" />
+              </label>
+              <label class="field" style="grid-column: 1 / -1">
+                <span class="field__label">Descrição</span>
+                <textarea class="field__input" id="atividadeDesc" rows="3" maxlength="400"></textarea>
+              </label>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn--filled" type="submit">
+                <span class="material-symbols-outlined" aria-hidden="true">add</span>
+                Publicar atividade
+              </button>
+            </div>
+          </form>
+
+          <div id="atividadesListProf" class="disc-list" aria-live="polite"></div>
+        </section>
+
+        <!-- ========== 13. FREQUÊNCIA ========== -->
+        <section
+          class="view"
+          id="view-frequencia"
+          hidden
+          data-roles="professor"
+          data-title="Frequência"
+          aria-labelledby="frequencia-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="frequencia-heading" class="display-title">Frequência</h2>
+              <p class="lede">Registre faltas por turma e aluno. O aluno vê o total no Dashboard.</p>
+            </div>
+          </header>
+
+          <form class="card form-card" id="faltaForm" novalidate>
+            <div class="field-grid">
+              <label class="field">
+                <span class="field__label">Turma</span>
+                <select class="field__input" id="faltaTurma" required>
+                  <option value="">Selecione uma turma</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="field__label">Aluno</span>
+                <select class="field__input" id="faltaAluno" required>
+                  <option value="">Selecione um aluno</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="field__label">Data</span>
+                <input class="field__input" id="faltaData" type="date" required />
+              </label>
+              <label class="field">
+                <span class="field__label">Motivo (opcional)</span>
+                <input class="field__input" id="faltaMotivo" type="text" maxlength="120" />
+              </label>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn--filled" type="submit">
+                <span class="material-symbols-outlined" aria-hidden="true">event_busy</span>
+                Registrar falta
+              </button>
+            </div>
+          </form>
+
+          <div id="faltasListProf" class="disc-list" aria-live="polite"></div>
+        </section>
+
+        <!-- ========== 14. APRESENTAÇÃO ANTES × DEPOIS ========== -->
+        <section
+          class="view"
+          id="view-apresentacao"
+          hidden
+          data-roles="admin,aluno,professor"
+          data-title="Antes × Depois"
+          aria-labelledby="apresentacao-heading"
+        >
+          <header class="page-intro">
+            <div>
+              <h2 id="apresentacao-heading" class="display-title">Apresentação Antes × Depois</h2>
+              <p class="lede">
+                16 telas em pares 1:1 — a <strong>mesma seção</strong> no ANTES e no DEPOIS, já com o design atual.
+              </p>
+            </div>
+            <div class="page-intro__actions">
+              <button class="btn btn--filled" type="button" id="openSlidesFullscreen">
+                <span class="material-symbols-outlined" aria-hidden="true">fullscreen</span>
+                Abrir modo apresentação
+              </button>
+            </div>
+          </header>
+
+          <article class="card panel">
+            <div class="panel__head">
+              <div>
+                <p class="eyebrow">Entrega</p>
+                <h3>Como apresentar</h3>
+              </div>
+            </div>
+            <ol class="checklist checklist--ordered">
+              <li>16 slides: 01 ANTES → 02 DEPOIS → … → 16 DEPOIS.</li>
+              <li>Navegue com ← → / Espaço.</li>
+              <li>Ative <strong>Frases</strong> (ou tecla <code>N</code>) para ver o texto de apoio no centro.</li>
+              <li>Depois faça o login dos 3 cargos ao vivo.</li>
+            </ol>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- ========== SLIDES FULLSCREEN: 16 telas ANTES / DEPOIS ========== -->
+  <div class="slides-root" id="slidesRoot" hidden>
+    <div class="slides-stage" id="slidesStage" role="region" aria-label="Apresentação Antes × Depois — 16 telas">
+
+      <!-- Pares 1:1 — mesma âncora no ANTES e no DEPOIS (depois-mirror = clone estrutural) -->
+      <article class="slide is-active" data-slide="0" data-kind="antes" data-cue="Mesma tela de dashboard — versão original roxa.">
+        <div class="slide__chrome"><span class="slide__badge">01 · ANTES</span><span class="slide__topic">Dashboard</span></div>
+        <iframe class="slide__screen" src="antes/index.html#hero" title="Antes — Dashboard" loading="eager" tabindex="-1"></iframe>
+      </article>
+      <article class="slide" data-slide="1" data-kind="depois" data-cue="A mesma tela de dashboard — agora no estilo Aurora: fundo escuro em camadas, uma ação principal e brilho só no destaque.">
+        <div class="slide__chrome slide__chrome--depois"><span class="slide__badge slide__badge--depois">02 · DEPOIS</span><span class="slide__topic">Dashboard</span></div>
+        <iframe class="slide__screen" src="depois-mirror.html?v=aurora#hero" title="Depois — Dashboard" loading="eager" tabindex="-1"></iframe>
+      </article>
+
+      <article class="slide" data-slide="2" data-kind="antes" data-cue="Mesma seção Notas / desempenho — antes.">
+        <div class="slide__chrome"><span class="slide__badge">03 · ANTES</span><span class="slide__topic">Notas / Desempenho</span></div>
+        <iframe class="slide__screen" src="antes/index.html#desempenho" title="Antes — Notas" loading="lazy" tabindex="-1"></iframe>
+      </article>
+      <article class="slide" data-slide="3" data-kind="depois" data-cue="A mesma seção de notas — gráfico com a nota atual em destaque e situação por disciplina.">
+        <div class="slide__chrome slide__chrome--depois"><span class="slide__badge slide__badge--depois">04 · DEPOIS</span><span class="slide__topic">Notas / Desempenho</span></div>
+        <iframe class="slide__screen" src="depois-mirror.html?v=aurora#desempenho" title="Depois — Notas" loading="lazy" tabindex="-1"></iframe>
+      </article>
+
+      <article class="slide" data-slide="4" data-kind="antes" data-cue="Mesmas ações rápidas — ícones ad-hoc.">
+        <div class="slide__chrome"><span class="slide__badge">05 · ANTES</span><span class="slide__topic">Ações rápidas</span></div>
+        <iframe class="slide__screen" src="antes/index.html#componentes" title="Antes — Ações" loading="lazy" tabindex="-1"></iframe>
+      </article>
+      <article class="slide" data-slide="5" data-kind="depois" data-cue="As mesmas ações rápidas — ícones Material Symbols e cards que expandem ao passar o mouse.">
+        <div class="slide__chrome slide__chrome--depois"><span class="slide__badge slide__badge--depois">06 · DEPOIS</span><span class="slide__topic">Ações rápidas</span></div>
+        <iframe class="slide__screen" src="depois-mirror.html?v=aurora#componentes" title="Depois — Ações" loading="lazy" tabindex="-1"></iframe>
+      </article>
+
+      <article class="slide" data-slide="6" data-kind="antes" data-cue="Mesmo formulário de perfil — salvar sem loading.">
+        <div class="slide__chrome"><span class="slide__badge">07 · ANTES</span><span class="slide__topic">Meu perfil</span></div>
+        <iframe class="slide__screen" src="antes/index.html#perfil" title="Antes — Perfil" loading="lazy" tabindex="-1"></iframe>
+      </article>
+      <article class="slide" data-slide="7" data-kind="depois" data-cue="O mesmo perfil — campos com rótulo, loading no botão e Snackbar de confirmação.">
+        <div class="slide__chrome slide__chrome--depois"><span class="slide__badge slide__badge--depois">08 · DEPOIS</span><span class="slide__topic">Meu perfil</span></div>
+        <iframe class="slide__screen" src="depois-mirror.html?v=aurora#perfil" title="Depois — Perfil" loading="lazy" tabindex="-1"></iframe>
+      </article>
+
+      <article class="slide" data-slide="8" data-kind="antes" data-cue="O mesmo dashboard no celular — antes.">
+        <div class="slide__chrome"><span class="slide__badge">09 · ANTES</span><span class="slide__topic">Mobile · Dashboard</span></div>
+        <div class="slide__phone-wrap slide__phone-wrap--antes">
+          <iframe class="slide__screen slide__screen--phone" src="antes/index.html#hero" title="Antes — Mobile" loading="lazy" tabindex="-1"></iframe>
+        </div>
+      </article>
+      <article class="slide" data-slide="9" data-kind="depois" data-cue="O mesmo dashboard no celular — menu lateral recolhido, cards em coluna, sem rolagem horizontal.">
+        <div class="slide__chrome slide__chrome--depois"><span class="slide__badge slide__badge--depois">10 · DEPOIS</span><span class="slide__topic">Mobile · Dashboard</span></div>
+        <div class="slide__phone-wrap">
+          <iframe class="slide__screen slide__screen--phone" src="depois-mirror.html?v=aurora#hero" title="Depois — Mobile" loading="lazy" tabindex="-1"></iframe>
+        </div>
+      </article>
+
+      <article class="slide" data-slide="10" data-kind="antes" data-cue="A mesma tela no tema claro original.">
+        <div class="slide__chrome"><span class="slide__badge">11 · ANTES</span><span class="slide__topic">Tema claro</span></div>
+        <iframe class="slide__screen" src="antes/index.html#hero" title="Antes — Tema" loading="lazy" tabindex="-1"></iframe>
+      </article>
+      <article class="slide" data-slide="11" data-kind="depois" data-cue="A mesma tela no tema claro — os outros slides já mostram o escuro; os dois temas saem dos mesmos tokens, sem cor fixa nas telas.">
+        <div class="slide__chrome slide__chrome--depois"><span class="slide__badge slide__badge--depois">12 · DEPOIS</span><span class="slide__topic">Tema claro + escuro</span></div>
+        <iframe class="slide__screen" src="depois-mirror.html?v=aurora#light" title="Depois — Tema claro (o escuro é o padrão)" loading="lazy" tabindex="-1"></iframe>
+      </article>
+
+      <article class="slide" data-slide="12" data-kind="antes" data-cue="Mesmo menu lateral — só aluno João Silva.">
+        <div class="slide__chrome"><span class="slide__badge">13 · ANTES</span><span class="slide__topic">Menu / perfil</span></div>
+        <iframe class="slide__screen" src="antes/index.html#hero" title="Antes — Menu" loading="lazy" tabindex="-1"></iframe>
+      </article>
+      <article class="slide" data-slide="13" data-kind="depois" data-cue="O mesmo menu — item ativo destacado, contadores e perfil do usuário no rodapé.">
+        <div class="slide__chrome slide__chrome--depois"><span class="slide__badge slide__badge--depois">14 · DEPOIS</span><span class="slide__topic">Menu / cargos</span></div>
+        <iframe class="slide__screen" src="depois-mirror.html?v=aurora#hero" title="Depois — Menu" loading="lazy" tabindex="-1"></iframe>
+      </article>
+
+      <article class="slide" data-slide="14" data-kind="antes" data-cue="Mesma área de estados — vazia, sem orientação.">
+        <div class="slide__chrome"><span class="slide__badge">15 · ANTES</span><span class="slide__topic">Estados</span></div>
+        <iframe class="slide__screen" src="antes/index.html#estados" title="Antes — Estados" loading="lazy" tabindex="-1"></iframe>
+      </article>
+      <article class="slide" data-slide="15" data-kind="depois" data-cue="A mesma área — empty state com próximo passo e Dialog que confirma a exclusão.">
+        <div class="slide__chrome slide__chrome--depois"><span class="slide__badge slide__badge--depois">16 · DEPOIS</span><span class="slide__topic">Estados</span></div>
+        <iframe class="slide__screen" src="depois-mirror.html?v=aurora#estados" title="Depois — Estados" loading="lazy" tabindex="-1"></iframe>
+      </article>
+    </div>
+
+    <div class="slide-teleprompter" id="slideTeleprompter" hidden aria-live="polite"></div>
+
+    <div class="slides-controls">
+      <button class="btn btn--tonal" type="button" id="slidesPrev" aria-label="Slide anterior">
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+        Anterior
+      </button>
+      <span class="slides-counter" id="slidesCounter">1 / 16</span>
+      <button class="btn btn--filled" type="button" id="slidesNext" aria-label="Próximo slide">
+        Próximo
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+      </button>
+      <button class="btn btn--tonal" type="button" id="slidesToggleCues" aria-pressed="false" title="Mostrar frases para falar">
+        <span class="material-symbols-outlined" aria-hidden="true">record_voice_over</span>
+        Frases
+      </button>
+      <button class="btn btn--text" type="button" id="slidesClose" aria-label="Fechar apresentação">
+        Fechar
+      </button>
+    </div>
+  </div>
+
+  <!-- ========== DIALOG: novo usuário ========== -->
+  <div class="dialog-root" id="userDialog" hidden role="presentation">
+    <div class="dialog-scrim" data-user-dialog-close></div>
+    <div
+      class="dialog dialog--wide"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="userDialogTitle"
+      tabindex="-1"
+    >
+      <h2 id="userDialogTitle" class="dialog__title">Novo usuário</h2>
+      <form class="dialog__body user-form" id="userForm">
+        <label class="field">
+          <span class="field__label">Nome completo</span>
+          <input class="field__input" id="newUserName" type="text" required autocomplete="name" />
+        </label>
+        <label class="field">
+          <span class="field__label">RA</span>
+          <input class="field__input" id="newUserRa" type="text" inputmode="numeric" required />
+        </label>
+        <label class="field">
+          <span class="field__label">CPF (vira a senha)</span>
+          <input class="field__input" id="newUserCpf" type="text" inputmode="numeric" required maxlength="14" />
+        </label>
+        <label class="field">
+          <span class="field__label">Cargo</span>
+          <select class="field__input" id="newUserRole" required>
+            <option value="professor">Professor</option>
+            <option value="aluno">Aluno</option>
+          </select>
+        </label>
+        <div class="dialog__actions">
+          <button class="btn btn--text" type="button" data-user-dialog-close>Cancelar</button>
+          <button class="btn btn--filled" type="submit">Criar usuário</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========== DIALOG: nova turma ========== -->
+  <div class="dialog-root" id="turmaDialog" hidden role="presentation">
+    <div class="dialog-scrim" data-turma-dialog-close></div>
+    <div
+      class="dialog dialog--wide"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="turmaDialogTitle"
+      tabindex="-1"
+    >
+      <h2 id="turmaDialogTitle" class="dialog__title">Nova turma</h2>
+      <form class="dialog__body user-form" id="turmaForm">
+        <label class="field">
+          <span class="field__label">Disciplina</span>
+          <input class="field__input" id="newTurmaNome" type="text" required placeholder="Ex.: Material Design Framework" />
+        </label>
+        <label class="field">
+          <span class="field__label">Código da turma</span>
+          <input class="field__input" id="newTurmaCodigo" type="text" required placeholder="Ex.: MDF-A" />
+        </label>
+        <label class="field">
+          <span class="field__label">Professor</span>
+          <select class="field__input" id="newTurmaProfessor" required>
+            <option value="">Selecione</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="field__label">Horário (opcional)</span>
+          <input class="field__input" id="newTurmaHorario" type="text" placeholder="Ex.: Seg/Qua 19:00" />
+        </label>
+        <div class="dialog__actions">
+          <button class="btn btn--text" type="button" data-turma-dialog-close>Cancelar</button>
+          <button class="btn btn--filled" type="submit">Criar turma</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========== DIALOG: matricular aluno ========== -->
+  <div class="dialog-root" id="enrollDialog" hidden role="presentation">
+    <div class="dialog-scrim" data-enroll-dialog-close></div>
+    <div
+      class="dialog dialog--wide"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="enrollDialogTitle"
+      tabindex="-1"
+    >
+      <h2 id="enrollDialogTitle" class="dialog__title">Vincular aluno</h2>
+      <form class="dialog__body user-form" id="enrollForm">
+        <input type="hidden" id="enrollTurmaId" value="" />
+        <p class="muted">
+          Turma: <strong id="enrollTurmaLabel">—</strong>
+        </p>
+        <label class="field">
+          <span class="field__label">Aluno</span>
+          <select class="field__input" id="enrollAlunoSelect" required>
+            <option value="">Selecione um aluno</option>
+          </select>
+        </label>
+        <div class="dialog__actions">
+          <button class="btn btn--text" type="button" data-enroll-dialog-close>Cancelar</button>
+          <button class="btn btn--filled" type="submit">Vincular</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========== DIALOG: exclusão (compatibilidade) ========== -->
+  <div class="dialog-root" id="deleteDialog" hidden role="presentation">
+    <div class="dialog-scrim" data-dialog-close></div>
+    <div
+      class="dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="deleteDialogTitle"
+      aria-describedby="deleteDialogDesc"
+      tabindex="-1"
+    >
+      <h2 id="deleteDialogTitle" class="dialog__title">Excluir item?</h2>
+      <p id="deleteDialogDesc" class="dialog__body">
+        <span id="deleteDialogName">Este item</span> será removido.
+        Esta operação não poderá ser desfeita.
+      </p>
+      <div class="dialog__actions">
+        <button class="btn btn--text" type="button" data-dialog-close>Cancelar</button>
+        <button class="btn btn--danger" type="button" id="confirmDelete">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== FAB: voltar ao topo (extended FAB expande no hover) ========== -->
+  <button class="fab" id="backToTop" type="button" aria-label="Voltar ao topo" tabindex="-1">
+    <span class="material-symbols-outlined" aria-hidden="true">arrow_upward</span>
+    <span class="fab__label">Voltar ao topo</span>
+  </button>
+
+  <!-- ========== SNACKBAR ========== -->
+  <div class="snackbar" id="snackbar" role="status" aria-live="polite" aria-atomic="true">
+    <div class="snackbar__surface">
+      <span class="material-symbols-outlined snackbar__icon" id="snackbarIcon" aria-hidden="true">check_circle</span>
+      <span id="snackbarMessage">Alterações salvas com sucesso!</span>
+      <button class="btn btn--text snackbar__action" type="button" id="snackbarClose">Fechar</button>
+    </div>
+  </div>
+
+  <!-- db.js conecta no banco (ou ativa o modo local) e depois carrega
+       academic.js, script.js, slides.js e effects.js, nesta ordem. -->
+  <script src="db.js?v=20261126-db"></script>
+</body>
+</html>

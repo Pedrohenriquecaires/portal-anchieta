@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal Anchieta — DEPOIS (preview)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=20261117d" />
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body { min-height: 100%; }
+    .preview-view { display: none; min-height: 100vh; }
+    .preview-view.is-on { display: block; }
+    .preview-shell {
+      display: grid;
+      grid-template-columns: var(--drawer-width) 1fr;
+      min-height: 100vh;
+    }
+    .preview-main { min-width: 0; display: flex; flex-direction: column; }
+    .campus-strip {
+      display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      padding: 14px 18px; margin-bottom: 16px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(120deg, #071833, #0b3d91 60%, #1450b8);
+      color: #eaf1ff;
+    }
+    .campus-strip strong { display: block; font-family: var(--font-display); font-size: 1.15rem; }
+    .campus-strip span { opacity: .85; font-size: .88rem; }
+    .grade-bar {
+      height: 10px; border-radius: 999px; background: var(--md-surface-2); overflow: hidden; margin-top: 8px;
+    }
+    .grade-bar > i { display: block; height: 100%; width: 83%; background: linear-gradient(90deg, #0b3d91, #3b82f6); }
+    .phone-stage {
+      min-height: 100vh; display: grid; place-items: center;
+      background: radial-gradient(circle at 50% 10%, rgba(11,61,145,.35), transparent 40%), #07111f;
+      padding: 16px;
+    }
+    .phone-frame {
+      width: 360px; max-width: 94vw; height: min(740px, 92vh);
+      border-radius: 28px; overflow: auto; background: var(--md-bg);
+      border: 3px solid rgba(255,255,255,.2); box-shadow: var(--md-elev-3);
+    }
+    .phone-frame .drawer { display: none; }
+    .phone-frame .preview-shell { grid-template-columns: 1fr; }
+    .login-full { min-height: 100vh; }
+    .snack-float {
+      position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%);
+      z-index: 20; display: flex; gap: 10px; align-items: center;
+      padding: 12px 18px; border-radius: 12px; background: #10233f; color: #fff;
+      box-shadow: var(--md-elev-3);
+    }
+    @media (max-width: 820px) {
+      .preview-shell { grid-template-columns: 1fr; }
+      .drawer { display: none; }
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+  <!-- #dashboard -->
+  <section class="preview-view is-on" id="dashboard">
+    <div class="preview-shell">
+      <aside class="drawer">
+        <div class="drawer__brand">
+          <div class="brand-mark"><span class="material-symbols-outlined">school</span></div>
+          <div class="brand-copy"><strong class="brand-name">Portal Anchieta</strong><span class="brand-tag">Sistema acadêmico</span></div>
+        </div>
+        <p class="drawer__section-label">Menu</p>
+        <nav><ul class="nav-list">
+          <li><button class="nav-item is-active" type="button"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></button></li>
+          <li><button class="nav-item" type="button"><span class="material-symbols-outlined">menu_book</span><span>Minhas turmas</span></button></li>
+          <li><button class="nav-item" type="button"><span class="material-symbols-outlined">grade</span><span>Boletim</span></button></li>
+          <li><button class="nav-item" type="button"><span class="material-symbols-outlined">quiz</span><span>Provas</span></button></li>
+        </ul></nav>
+        <div class="drawer__footer">
+          <div class="student-pill"><div class="avatar">GM</div><div><strong>Gustavo Mira</strong><span>Aluno · RA 2609681</span></div></div>
+        </div>
+      </aside>
+      <div class="preview-main">
+        <header class="app-bar">
+          <div class="app-bar__start"><div><p class="eyebrow">Área do aluno · 2026.2</p><h1 class="app-bar__title">Dashboard</h1></div></div>
+          <div class="app-bar__end"><span class="chip chip--soft">Semestre ativo</span></div>
+        </header>
+        <main class="content">
+          <div class="campus-strip">
+            <div><strong>Centro Universitário Anchieta</strong><span>Portal acadêmico · notas, provas e atividades</span></div>
+            <span class="chip" style="background:#ffdf9a;color:#261a00">Situação regular</span>
+          </div>
+          <header class="page-intro">
+            <div>
+              <h2 class="display-title">Olá, Gustavo</h2>
+              <p class="lede">Acompanhe média, turmas, faltas e prazos — no padrão dos portais universitários.</p>
+            </div>
+            <div class="page-intro__actions">
+              <button class="btn btn--tonal" type="button">Ver boletim</button>
+              <button class="btn btn--filled" type="button">Entregar atividade</button>
+            </div>
+          </header>
+          <div class="metrics">
+            <article class="card metric"><p class="metric__label">Média geral</p><p class="metric__value">8,3</p><p class="metric__hint">Ponderada P1/P2/trabalhos</p></article>
+            <article class="card metric"><p class="metric__label">Turmas</p><p class="metric__value">2</p><p class="metric__hint">Matrículas ativas</p></article>
+            <article class="card metric"><p class="metric__label">Faltas</p><p class="metric__value">1</p><p class="metric__hint">Frequência ok</p></article>
+            <article class="card metric"><p class="metric__label">Atividades</p><p class="metric__value">3</p><p class="metric__hint">1 pendente</p></article>
+          </div>
+          <div class="split-grid">
+            <article class="card panel">
+              <div class="panel__head"><div><p class="eyebrow">Desempenho</p><h3>Progresso do semestre</h3></div><span class="chip chip--success">83%</span></div>
+              <div class="grade-bar" aria-hidden="true"><i></i></div>
+              <p class="muted" style="margin-top:12px">P1 8,5 · Trabalho 9,0 · Atividade 7,5</p>
+            </article>
+            <article class="card panel">
+              <div class="panel__head"><div><p class="eyebrow">Agenda</p><h3>Próximas provas</h3></div></div>
+              <ul class="event-list">
+                <li class="event"><div class="event__date"><strong>10</strong><span>DEZ</span></div><div><strong>P2 — Acessibilidade</strong><p>Material Design Framework</p></div></li>
+              </ul>
+            </article>
+          </div>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <!-- #hierarchy -->
+  <section class="preview-view" id="hierarchy">
+    <div class="preview-shell">
+      <aside class="drawer">
+        <div class="drawer__brand"><div class="brand-mark"><span class="material-symbols-outlined">school</span></div><div class="brand-copy"><strong class="brand-name">Portal Anchieta</strong><span class="brand-tag">Boletim</span></div></div>
+        <nav><ul class="nav-list"><li><button class="nav-item is-active" type="button"><span class="material-symbols-outlined">grade</span><span>Boletim / Notas</span></button></li></ul></nav>
+      </aside>
+      <div class="preview-main">
+        <header class="app-bar"><div class="app-bar__start"><div><p class="eyebrow">Área do aluno</p><h1 class="app-bar__title">Boletim / Notas</h1></div></div></header>
+        <main class="content">
+          <header class="page-intro"><div><h2 class="display-title">Boletim acadêmico</h2><p class="lede">Hierarquia clara: título → contexto → ação → detalhe.</p></div></header>
+          <article class="card panel boletim-card">
+            <div class="panel__head">
+              <div><p class="eyebrow">MDF-A · Seg/Qua 19:00</p><h3>Material Design Framework</h3></div>
+              <span class="chip chip--success">Aprovado · 8,4</span>
+            </div>
+            <div class="table-wrap">
+              <table class="audit-table">
+                <thead><tr><th>Tipo</th><th>Nota</th><th>Observação</th><th>Data</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="chip chip--soft">P1</span></td><td><strong>8,5</strong></td><td>Tokens</td><td>15/09/2026</td></tr>
+                  <tr><td><span class="chip chip--soft">Trabalho</span></td><td><strong>9,0</strong></td><td>Redesign</td><td>10/10/2026</td></tr>
+                  <tr><td><span class="chip chip--soft">Atividade</span></td><td><strong>7,5</strong></td><td>Quiz</td><td>20/10/2026</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <!-- #components -->
+  <section class="preview-view" id="components">
+    <div class="preview-shell">
+      <aside class="drawer">
+        <div class="drawer__brand"><div class="brand-mark"><span class="material-symbols-outlined">school</span></div><div class="brand-copy"><strong class="brand-name">Portal Anchieta</strong><span class="brand-tag">Material</span></div></div>
+        <nav><ul class="nav-list"><li><button class="nav-item is-active" type="button"><span class="material-symbols-outlined">widgets</span><span>Componentes</span></button></li></ul></nav>
+      </aside>
+      <div class="preview-main">
+        <header class="app-bar">
+          <div class="app-bar__start"><div><p class="eyebrow">Design System</p><h1 class="app-bar__title">Componentes Material</h1></div></div>
+          <div class="app-bar__end"><span class="avatar avatar--sm">GM</span></div>
+        </header>
+        <main class="content">
+          <header class="page-intro"><div><h2 class="display-title">Padrão único</h2><p class="lede">AppBar, Drawer, Card, Button, Chip, TextField, Dialog, Snackbar.</p></div></header>
+          <div class="page-intro__actions" style="margin-bottom:16px">
+            <button class="btn btn--filled" type="button">Filled</button>
+            <button class="btn btn--tonal" type="button">Tonal</button>
+            <button class="btn btn--text" type="button">Text</button>
+            <span class="chip">Chip</span>
+            <span class="chip chip--success">Sucesso</span>
+            <span class="chip chip--warning">Atenção</span>
+          </div>
+          <form class="card form-card">
+            <label class="field"><span class="field__label">Nome completo</span><input class="field__input" value="Gustavo Henrique Mira" readonly /></label>
+            <label class="field"><span class="field__label">E-mail institucional</span><input class="field__input" value="gustavo.mira@anchieta.edu.br" readonly /></label>
+          </form>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <!-- #feedback -->
+  <section class="preview-view" id="feedback">
+    <div class="preview-shell">
+      <aside class="drawer">
+        <div class="drawer__brand"><div class="brand-mark"><span class="material-symbols-outlined">school</span></div><div class="brand-copy"><strong class="brand-name">Portal Anchieta</strong><span class="brand-tag">Feedback</span></div></div>
+        <nav><ul class="nav-list"><li><button class="nav-item is-active" type="button"><span class="material-symbols-outlined">person</span><span>Meu perfil</span></button></li></ul></nav>
+      </aside>
+      <div class="preview-main">
+        <header class="app-bar"><div class="app-bar__start"><div><p class="eyebrow">Área do aluno</p><h1 class="app-bar__title">Meu perfil</h1></div></div></header>
+        <main class="content">
+          <header class="page-intro"><div><h2 class="display-title">Editar perfil</h2><p class="lede">Loading no botão + Snackbar de confirmação.</p></div></header>
+          <form class="card form-card">
+            <label class="field"><span class="field__label">Nome</span><input class="field__input" value="Gustavo Henrique Mira" readonly /></label>
+            <div class="form-actions">
+              <button class="btn btn--filled" type="button" disabled>
+                <span class="btn__spinner" aria-hidden="true"></span>
+                <span>Salvando...</span>
+              </button>
+            </div>
+          </form>
+        </main>
+      </div>
+    </div>
+    <div class="snack-float"><span class="material-symbols-outlined">check_circle</span> Alterações salvas com sucesso!</div>
+  </section>
+
+  <!-- #mobile -->
+  <section class="preview-view" id="mobile">
+    <div class="phone-stage">
+      <div class="phone-frame">
+        <header class="app-bar">
+          <div class="app-bar__start">
+            <button class="icon-btn" type="button"><span class="material-symbols-outlined">menu</span></button>
+            <div><p class="eyebrow">Aluno</p><h1 class="app-bar__title">Dashboard</h1></div>
+          </div>
+        </header>
+        <main class="content">
+          <h2 class="display-title" style="font-size:1.5rem">Olá, Gustavo</h2>
+          <p class="lede">Layout estável em 360px.</p>
+          <div class="metrics" style="grid-template-columns:1fr 1fr">
+            <article class="card metric"><p class="metric__label">Média</p><p class="metric__value">8,3</p></article>
+            <article class="card metric"><p class="metric__label">Turmas</p><p class="metric__value">2</p></article>
+            <article class="card metric"><p class="metric__label">Faltas</p><p class="metric__value">1</p></article>
+            <article class="card metric"><p class="metric__label">Ativ.</p><p class="metric__value">3</p></article>
+          </div>
+          <article class="card panel"><strong>Próxima prova</strong><p class="muted">P2 · 10/12 · Material Design</p></article>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <!-- #dark -->
+  <section class="preview-view" id="dark">
+    <div class="preview-shell">
+      <aside class="drawer">
+        <div class="drawer__brand"><div class="brand-mark"><span class="material-symbols-outlined">dark_mode</span></div><div class="brand-copy"><strong class="brand-name">Portal Anchieta</strong><span class="brand-tag">Tema escuro</span></div></div>
+        <nav><ul class="nav-list"><li><button class="nav-item is-active" type="button"><span class="material-symbols-outlined">contrast</span><span>Dark Mode</span></button></li></ul></nav>
+      </aside>
+      <div class="preview-main">
+        <header class="app-bar"><div class="app-bar__start"><div><p class="eyebrow">Tokens semânticos</p><h1 class="app-bar__title">Modo escuro</h1></div></div></header>
+        <main class="content">
+          <header class="page-intro"><div><h2 class="display-title">Mesma UI, outro tema</h2><p class="lede">primary / surface / text — sem cores fixas espalhadas.</p></div></header>
+          <div class="metrics">
+            <article class="card metric"><p class="metric__label">Primary</p><p class="metric__value" style="font-size:1.2rem">token</p></article>
+            <article class="card metric"><p class="metric__label">Surface</p><p class="metric__value" style="font-size:1.2rem">token</p></article>
+            <article class="card metric"><p class="metric__label">Texto</p><p class="metric__value" style="font-size:1.2rem">token</p></article>
+            <article class="card metric"><p class="metric__label">Sucesso</p><p class="metric__value" style="font-size:1.2rem">token</p></article>
+          </div>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <!-- #roles -->
+  <section class="preview-view" id="roles">
+    <section class="login-screen login-full">
+      <div class="login-panel card">
+        <div class="login-panel__brand">
+          <div class="brand-mark"><span class="material-symbols-outlined">school</span></div>
+          <div><strong class="brand-name">Portal Anchieta</strong><p class="muted">Sistema acadêmico</p></div>
+        </div>
+        <h1 class="display-title login-title">Entrar</h1>
+        <p class="lede">Coordenador · Professor · Aluno — cada um com menu próprio.</p>
+        <form class="login-form">
+          <label class="field"><span class="field__label">RA ou usuário</span><input class="field__input" value="2609681" readonly /></label>
+          <label class="field"><span class="field__label">Senha (CPF)</span><input class="field__input" type="password" value="46580142898" readonly /></label>
+          <button class="btn btn--filled login-submit" type="button">Entrar no portal</button>
+        </form>
+        <div class="login-demos">
+          <button class="login-demo" type="button"><strong>Coordenador</strong><span>admin</span><small>Usuários e turmas</small></button>
+          <button class="login-demo" type="button"><strong>Professor</strong><span>2601001</span><small>Notas, provas, faltas</small></button>
+          <button class="login-demo" type="button"><strong>Aluno</strong><span>2609681</span><small>Boletim e entregas</small></button>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- #states -->
+  <section class="preview-view" id="states">
+    <div class="preview-shell">
+      <aside class="drawer">
+        <div class="drawer__brand"><div class="brand-mark"><span class="material-symbols-outlined">school</span></div><div class="brand-copy"><strong class="brand-name">Portal Anchieta</strong><span class="brand-tag">Estados UX</span></div></div>
+        <nav><ul class="nav-list"><li><button class="nav-item is-active" type="button"><span class="material-symbols-outlined">fact_check</span><span>Estados</span></button></li></ul></nav>
+      </aside>
+      <div class="preview-main">
+        <header class="app-bar"><div class="app-bar__start"><div><p class="eyebrow">Desafios A / B / C</p><h1 class="app-bar__title">Empty · Erro · Dialog</h1></div></div></header>
+        <main class="content">
+          <div class="empty-state">
+            <div class="empty-state__icon"><span class="material-symbols-outlined">menu_book</span></div>
+            <h3>Nenhuma turma vinculada</h3>
+            <p>Aguarde o professor matricular você em uma turma.</p>
+          </div>
+          <div class="card panel" style="max-width:420px;margin:20px auto">
+            <h3 style="margin-top:0">Excluir disciplina?</h3>
+            <p class="muted">Esta operação não poderá ser desfeita.</p>
+            <div class="form-actions">
+              <button class="btn btn--tonal" type="button">Cancelar</button>
+              <button class="btn btn--danger" type="button">Excluir</button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const ids = ["dashboard","hierarchy","components","feedback","mobile","dark","roles","states"];
+    function show() {
+      const key = (location.hash || "#dashboard").replace("#","");
+      const id = ids.includes(key) ? key : "dashboard";
+      document.body.dataset.theme = id === "dark" ? "dark" : "light";
+      document.querySelectorAll(".preview-view").forEach((el) => {
+        el.classList.toggle("is-on", el.id === id);
+      });
+    }
+    window.addEventListener("hashchange", show);
+    show();
+  </script>
+</body>
+</html>

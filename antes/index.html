@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+
+  <!--
+    viewport é essencial para responsividade.
+    Sem ele, o layout pode ser renderizado como desktop em telas pequenas.
+  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="description"
+    content="Protótipo acadêmico de dashboard estudantil com princípios de Material Design."
+  />
+
+  <title>EduConnect — Dashboard Acadêmico</title>
+
+  <!-- Fonte semelhante à linguagem visual do Material Design. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!--
+    Skip link:
+    recurso de acessibilidade que permite ao usuário de teclado
+    pular diretamente para o conteúdo principal.
+  -->
+  <a class="skip-link" href="#conteudo-principal">Ir para o conteúdo principal</a>
+
+  <div class="app-shell">
+    <!-- =========================================================
+         SIDEBAR / NAVEGAÇÃO PRINCIPAL
+         ========================================================= -->
+    <aside class="sidebar" id="sidebar" aria-label="Navegação principal">
+      <div class="brand">
+        <div class="brand__icon" aria-hidden="true">🎓</div>
+
+        <div>
+          <strong>EduConnect</strong>
+          <span>Portal acadêmico</span>
+        </div>
+
+        <button
+          class="icon-button sidebar__close"
+          id="closeSidebar"
+          aria-label="Fechar menu lateral"
+          type="button"
+        >
+          ✕
+        </button>
+      </div>
+
+      <p class="sidebar__label">Menu principal</p>
+
+      <nav>
+        <ul class="nav-list">
+          <!--
+            aria-current="page" comunica para leitores de tela
+            qual item representa a página atual.
+          -->
+          <li>
+            <a class="nav-item nav-item--active" href="#" aria-current="page">
+              <span class="nav-item__icon" aria-hidden="true">⌂</span>
+              <span>Dashboard</span>
+            </a>
+          </li>
+
+          <li>
+            <a class="nav-item" href="#desempenho">
+              <span class="nav-item__icon" aria-hidden="true">↗</span>
+              <span>Notas</span>
+            </a>
+          </li>
+
+          <li>
+            <a class="nav-item" href="#disciplinas">
+              <span class="nav-item__icon" aria-hidden="true">▣</span>
+              <span>Disciplinas</span>
+            </a>
+          </li>
+
+          <li>
+            <a class="nav-item" href="#matricula">
+              <span class="nav-item__icon" aria-hidden="true">✓</span>
+              <span>Matrícula</span>
+              <span class="status-badge status-badge--warning">Aberta</span>
+            </a>
+          </li>
+
+          <li>
+            <a class="nav-item" href="#perfil">
+              <span class="nav-item__icon" aria-hidden="true">○</span>
+              <span>Meu perfil</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar__spacer"></div>
+
+      <!-- Mini perfil melhora orientação e confiança do usuário. -->
+      <section class="student-card" aria-label="Resumo do perfil">
+        <div class="avatar" aria-hidden="true">JS</div>
+        <div>
+          <strong>João Silva</strong>
+          <span>RA 20261234</span>
+        </div>
+      </section>
+
+      <button class="nav-item nav-item--button" type="button" id="logoutButton">
+        <span class="nav-item__icon" aria-hidden="true">⇥</span>
+        <span>Sair do sistema</span>
+      </button>
+    </aside>
+
+    <!-- Overlay exibido no mobile quando o menu lateral abre. -->
+    <button
+      class="sidebar-overlay"
+      id="sidebarOverlay"
+      aria-label="Fechar menu"
+      type="button"
+      tabindex="-1"
+    ></button>
+
+    <!-- =========================================================
+         ÁREA PRINCIPAL
+         ========================================================= -->
+    <div class="main-area">
+      <!-- TOP APP BAR -->
+      <header class="topbar">
+        <div class="topbar__left">
+          <button
+            class="icon-button mobile-menu-button"
+            id="openSidebar"
+            aria-label="Abrir menu"
+            aria-controls="sidebar"
+            aria-expanded="false"
+            type="button"
+          >
+            ☰
+          </button>
+
+          <div>
+            <span class="eyebrow">Área do aluno</span>
+            <h1>Dashboard</h1>
+          </div>
+        </div>
+
+        <div class="topbar__actions">
+          <label class="select-control" aria-label="Selecionar semestre">
+            <span aria-hidden="true">▦</span>
+            <select id="semesterSelect">
+              <option value="2026.2">2026.2</option>
+              <option value="2026.1">2026.1</option>
+              <option value="2025.2">2025.2</option>
+            </select>
+          </label>
+
+          <!-- Alternância de tema adiciona personalização sem poluir a interface. -->
+          <button
+            class="icon-button"
+            id="themeToggle"
+            aria-label="Alternar tema claro/escuro"
+            type="button"
+          >
+            ◐
+          </button>
+
+          <button
+            class="icon-button notification-button"
+            id="notificationButton"
+            aria-label="Abrir notificações"
+            type="button"
+          >
+            ♢
+            <span class="notification-dot" aria-hidden="true"></span>
+          </button>
+
+          <button class="profile-button" type="button" aria-label="Abrir perfil">
+            <span class="avatar avatar--small" aria-hidden="true">JS</span>
+            <span class="profile-button__copy">
+              <strong>João Silva</strong>
+              <small>Aluno</small>
+            </span>
+            <span aria-hidden="true">⌄</span>
+          </button>
+        </div>
+      </header>
+
+      <main id="conteudo-principal" class="content">
+        <!-- =====================================================
+             HERO / BOAS-VINDAS
+             ===================================================== -->
+        <section class="hero" id="hero" aria-labelledby="hero-title">
+          <div class="hero__content">
+            <span class="semester-pill">✦ Semestre <span data-semester>2026.2</span></span>
+
+            <h2 id="hero-title">Olá, João! 👋</h2>
+
+            <p>
+              Acompanhe seu desempenho, suas disciplinas e os próximos compromissos
+              acadêmicos em um só lugar.
+            </p>
+
+            <div class="hero__actions">
+              <a class="button button--primary" href="#desempenho">
+                Ver meu desempenho <span aria-hidden="true">→</span>
+              </a>
+
+              <button class="button button--ghost-on-hero" type="button" id="openQuickActions">
+                Ações rápidas
+              </button>
+            </div>
+          </div>
+
+          <!-- Elemento decorativo, oculto para leitores de tela. -->
+          <div class="hero__visual" aria-hidden="true">
+            <div class="hero__orb hero__orb--1"></div>
+            <div class="hero__orb hero__orb--2"></div>
+            <div class="hero__mock-card">
+              <span>Progresso do semestre</span>
+              <strong>78%</strong>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 78%"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================
+             INDICADORES PRINCIPAIS
+             ===================================================== -->
+        <section class="metrics-grid" aria-label="Resumo acadêmico">
+          <article class="metric-card">
+            <div class="metric-card__top">
+              <span class="metric-icon metric-icon--indigo" aria-hidden="true">↗</span>
+              <span class="metric-period" data-semester>2026.2</span>
+            </div>
+            <span class="metric-label">Média geral</span>
+            <strong class="metric-value">8,7</strong>
+            <small class="metric-helper metric-helper--positive">
+              ↑ 0,4 vs. semestre anterior
+            </small>
+          </article>
+
+          <article class="metric-card" id="disciplinas">
+            <div class="metric-card__top">
+              <span class="metric-icon metric-icon--green" aria-hidden="true">▣</span>
+              <span class="metric-period" data-semester>2026.2</span>
+            </div>
+            <span class="metric-label">Disciplinas</span>
+            <strong class="metric-value">6</strong>
+            <small class="metric-helper">24 créditos matriculados</small>
+          </article>
+
+          <article class="metric-card">
+            <div class="metric-card__top">
+              <span class="metric-icon metric-icon--purple" aria-hidden="true">◷</span>
+              <span class="metric-period" data-semester>2026.2</span>
+            </div>
+            <span class="metric-label">Frequência</span>
+            <strong class="metric-value">94%</strong>
+            <small class="metric-helper">Excelente aproveitamento</small>
+          </article>
+
+          <article class="metric-card" id="matricula">
+            <div class="metric-card__top">
+              <span class="metric-icon metric-icon--amber" aria-hidden="true">!</span>
+              <span class="metric-period" data-semester>2026.2</span>
+            </div>
+            <span class="metric-label">Pendências</span>
+            <strong class="metric-value">2</strong>
+            <small class="metric-helper">1 atividade • 1 matrícula</small>
+          </article>
+        </section>
+
+        <!-- =====================================================
+             CONTEÚDO SECUNDÁRIO
+             ===================================================== -->
+        <section class="dashboard-grid">
+          <article class="panel" id="desempenho">
+            <div class="panel__header">
+              <div>
+                <span class="eyebrow">Desempenho</span>
+                <h3>Evolução da média</h3>
+              </div>
+
+              <button class="text-button" type="button">Ver boletim →</button>
+            </div>
+
+            <!--
+              Gráfico propositalmente construído sem biblioteca externa.
+              Para um projeto real, pode ser substituído por Chart.js, ECharts etc.
+            -->
+            <div class="chart" aria-label="Gráfico da média por bimestre">
+              <div class="chart__grid" aria-hidden="true"></div>
+
+              <div class="chart__bars">
+                <div class="bar-item">
+                  <div class="bar" style="--bar-height: 62%">
+                    <span class="bar__value">7,4</span>
+                  </div>
+                  <span>1º bim.</span>
+                </div>
+
+                <div class="bar-item">
+                  <div class="bar" style="--bar-height: 70%">
+                    <span class="bar__value">8,0</span>
+                  </div>
+                  <span>2º bim.</span>
+                </div>
+
+                <div class="bar-item">
+                  <div class="bar" style="--bar-height: 78%">
+                    <span class="bar__value">8,5</span>
+                  </div>
+                  <span>3º bim.</span>
+                </div>
+
+                <div class="bar-item">
+                  <div class="bar bar--highlight" style="--bar-height: 84%">
+                    <span class="bar__value">8,7</span>
+                  </div>
+                  <span>Atual</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <aside class="panel">
+            <div class="panel__header">
+              <div>
+                <span class="eyebrow">Agenda</span>
+                <h3>Próximos eventos</h3>
+              </div>
+              <button class="icon-button" type="button" aria-label="Abrir calendário">
+                +
+              </button>
+            </div>
+
+            <div class="event-list">
+              <article class="event">
+                <div class="event__date">
+                  <strong>12</strong>
+                  <span>SET</span>
+                </div>
+                <div class="event__content">
+                  <strong>Entrega — Projeto de Interface</strong>
+                  <span>Material Design Framework • 23:59</span>
+                </div>
+              </article>
+
+              <article class="event">
+                <div class="event__date">
+                  <strong>15</strong>
+                  <span>SET</span>
+                </div>
+                <div class="event__content">
+                  <strong>Avaliação — UX Research</strong>
+                  <span>Laboratório 04 • 19:00</span>
+                </div>
+              </article>
+
+              <article class="event">
+                <div class="event__date">
+                  <strong>18</strong>
+                  <span>SET</span>
+                </div>
+                <div class="event__content">
+                  <strong>Período de matrícula</strong>
+                  <span>Portal acadêmico • até 18:00</span>
+                </div>
+              </article>
+            </div>
+          </aside>
+        </section>
+
+        <!-- =====================================================
+             AÇÕES RÁPIDAS
+             ===================================================== -->
+        <section class="panel quick-actions-panel" id="componentes">
+          <div class="panel__header">
+            <div>
+              <span class="eyebrow">Atalhos</span>
+              <h3>Ações rápidas</h3>
+            </div>
+          </div>
+
+          <div class="quick-actions-grid">
+            <button class="quick-action" type="button" data-action="segunda-via">
+              <span aria-hidden="true">▤</span>
+              <strong>2ª via de boleto</strong>
+              <small>Acessar financeiro</small>
+            </button>
+
+            <button class="quick-action" type="button" data-action="grade">
+              <span aria-hidden="true">▦</span>
+              <strong>Grade de horários</strong>
+              <small>Ver aulas da semana</small>
+            </button>
+
+            <button class="quick-action" type="button" data-action="documentos">
+              <span aria-hidden="true">□</span>
+              <strong>Documentos</strong>
+              <small>Atestados e declarações</small>
+            </button>
+
+            <button class="quick-action" type="button" data-action="suporte">
+              <span aria-hidden="true">?</span>
+              <strong>Suporte</strong>
+              <small>Central de atendimento</small>
+            </button>
+          </div>
+        </section>
+
+        <section class="panel" id="perfil">
+          <div class="panel__header">
+            <div>
+              <span class="eyebrow">Conta</span>
+              <h3>Meu perfil</h3>
+            </div>
+          </div>
+          <form id="profileFormAntes" style="display:grid;gap:12px;max-width:480px">
+            <label style="display:grid;gap:4px">
+              <span>Nome completo</span>
+              <input type="text" value="João Silva" style="padding:10px;border:1px solid #e2e8f0;border-radius:10px" />
+            </label>
+            <label style="display:grid;gap:4px">
+              <span>E-mail</span>
+              <input type="email" value="joao.silva@email.com" style="padding:10px;border:1px solid #e2e8f0;border-radius:10px" />
+            </label>
+            <button class="button button--primary" type="submit">Salvar</button>
+          </form>
+        </section>
+
+        <section class="panel" id="estados">
+          <div class="panel__header">
+            <div>
+              <span class="eyebrow">Pendências</span>
+              <h3>Estados de interface</h3>
+            </div>
+          </div>
+          <p style="opacity:.45;margin:0">(vazio)</p>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Toast: feedback visual curto para ações do usuário. -->
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+  >
+    <span id="toastMessage">Ação concluída.</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

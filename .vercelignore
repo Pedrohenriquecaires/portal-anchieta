@@ -1,0 +1,4 @@
+# Arquivos que não precisam ir para o site publicado
+README.md
+depois-views.html
+.vercel

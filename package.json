@@ -1,0 +1,14 @@
+{
+  "name": "portal-anchieta",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Portal Anchieta — front Material/Aurora + API (Vercel Functions) + Postgres (Neon)",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "pg": "^8.13.1"
+  }
+}
