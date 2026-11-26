@@ -408,7 +408,20 @@ export async function upsertItem(client, collection, item, { keepFields } = {}) 
   }
 
   let cols = Object.keys(row);
-  if (keepFields) cols = cols.filter((c) => c === "id" || keepFields.includes(c));
+  if (keepFields) {
+    // Alteração parcial (professor na turma, usuário no próprio perfil):
+    // UPDATE só nas colunas permitidas — nunca um INSERT incompleto.
+    const allowed = cols.filter((c) => c !== "id" && keepFields.includes(c));
+    if (allowed.length) {
+      const sets = allowed.map((c, i) => (c === "extra" ? `${c} = $${i + 2}::jsonb` : `${c} = $${i + 2}`));
+      await client.query(
+        `UPDATE ${cfg.table} SET ${sets.join(", ")}, atualizado_em = now() WHERE id = $1`,
+        [row.id, ...allowed.map((c) => (c === "extra" ? JSON.stringify(row[c]) : row[c]))]
+      );
+    }
+    if (collection === "turmas" && Array.isArray(item.alunosIds)) await saveTurmaAlunos(client, row.id, item.alunosIds);
+    return;
+  }
 
   const values = cols.map((c) => (c === "extra" ? JSON.stringify(row[c]) : row[c]));
   const placeholders = cols.map((c, i) => (c === "extra" ? `$${i + 1}::jsonb` : `$${i + 1}`));
@@ -423,17 +436,19 @@ export async function upsertItem(client, collection, item, { keepFields } = {}) 
     values
   );
 
-  if (collection === "turmas" && Array.isArray(item.alunosIds)) {
-    await client.query("DELETE FROM turma_alunos WHERE turma_id = $1", [row.id]);
-    const unique = [...new Set(item.alunosIds.map(String))];
-    if (unique.length) {
-      await client.query(
-        `INSERT INTO turma_alunos (turma_id, aluno_id, posicao)
-         SELECT $1, a.id, a.pos FROM unnest($2::text[]) WITH ORDINALITY AS a(id, pos)
-         WHERE EXISTS (SELECT 1 FROM usuarios u WHERE u.id = a.id)`,
-        [row.id, unique]
-      );
-    }
+  if (collection === "turmas" && Array.isArray(item.alunosIds)) await saveTurmaAlunos(client, row.id, item.alunosIds);
+}
+
+async function saveTurmaAlunos(client, turmaId, alunosIds) {
+  await client.query("DELETE FROM turma_alunos WHERE turma_id = $1", [turmaId]);
+  const unique = [...new Set(alunosIds.map(String))];
+  if (unique.length) {
+    await client.query(
+      `INSERT INTO turma_alunos (turma_id, aluno_id, posicao)
+       SELECT $1, a.id, a.pos FROM unnest($2::text[]) WITH ORDINALITY AS a(id, pos)
+       WHERE EXISTS (SELECT 1 FROM usuarios u WHERE u.id = a.id)`,
+      [turmaId, unique]
+    );
   }
 }
 

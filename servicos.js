@@ -24,7 +24,7 @@
   };
 
   const SEMESTRE = { nome: "2026.2", inicio: "2026-08-03", fim: "2026-12-12" };
-  const MENSALIDADE = 1289.0;
+  const MENSALIDADE = 640.0;
   const DIAS = [
     { key: "Seg", nome: "Segunda", js: 1 },
     { key: "Ter", nome: "Terça", js: 2 },
@@ -162,6 +162,27 @@
 
   /* ---------------- Janela imprimível (PDF) ---------------- */
 
+  // Usa a mesma logo do menu (logo.png na pasta do site), embutida no documento
+  // para aparecer sempre (inclusive no PDF). Sem a imagem, mostra o "A".
+  let logoData = null;
+  fetch(new URL("logo.png", location.href).href, { cache: "force-cache" })
+    .then((r) => (r.ok && /^image\//.test(r.headers.get("content-type") || "") ? r.blob() : null))
+    .then(
+      (blob) =>
+        blob &&
+        new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.readAsDataURL(blob);
+        })
+    )
+    .then((data) => (logoData = data || null))
+    .catch(() => (logoData = null));
+
+  function logoHtml() {
+    return logoData ? `<img class="logo" src="${logoData}" alt="Logo Anchieta">` : '<div class="mark">A</div>';
+  }
+
   function printWindow(title, bodyHtml) {
     const w = window.open("", "_blank");
     if (!w) {
@@ -178,6 +199,7 @@
   .doc::before { content: "DOCUMENTO DE DEMONSTRAÇÃO · SEM VALOR"; position: absolute; top: 46%; left: -10%; right: -10%; text-align: center; transform: rotate(-24deg);
     font-size: 30px; font-weight: 700; letter-spacing: .08em; color: rgba(98, 95, 255, .10); pointer-events: none; }
   header { display: flex; align-items: center; gap: 14px; padding-bottom: 20px; border-bottom: 2px solid #0e111b; margin-bottom: 28px; }
+  .logo { width: 56px; height: 56px; object-fit: contain; border-radius: 12px; }
   .mark { width: 46px; height: 46px; border-radius: 12px; background: linear-gradient(90deg,#305fbd,#625fff); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 20px; }
   header strong { display: block; font-size: 18px; } header small { color: #646a7d; }
   h1 { font-size: 22px; letter-spacing: -.02em; margin: 0 0 18px; text-transform: uppercase; }
@@ -201,7 +223,7 @@
   @media print { body { background: #fff; padding: 0; } .doc { border: 0; padding: 0; } .actions { display: none; } }
 </style></head><body>
 <div class="doc">
-  <header><div class="mark">A</div><div><strong>Centro Universitário Anchieta</strong><small>Portal Anchieta · Secretaria Acadêmica</small></div></header>
+  <header>${logoHtml()}<div><strong>Centro Universitário Anchieta</strong><small>Portal Anchieta · Secretaria Acadêmica</small></div></header>
   ${bodyHtml}
 </div>
 <div class="actions"><button class="ghost" onclick="window.close()">Fechar</button><button onclick="window.print()">Imprimir / Salvar PDF</button></div>
