@@ -234,14 +234,18 @@
 
   /* ================= 1. 2ª VIA DE BOLETO ================= */
 
+    // ===== CONFIGURAÇÃO DAS MENSALIDADES =====
+  const DIA_VENCIMENTO = 12;                       // dia do vencimento (todo mês)
+  const MESES_PAGOS = ["Ago", "Set", "Out", "Nov"]; // meses que aparecem como "Pago"
+
   function mensalidades(user) {
     const meses = ["Ago", "Set", "Out", "Nov", "Dez"];
     const nomes = ["Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
     const hoje = hojeISO();
     return meses.map((m, i) => {
       const mes = String(8 + i).padStart(2, "0");
-      const venc = `2026-${mes}-10`;
-      const pago = venc < hoje && i < 3; // Ago, Set, Out pagos
+      const venc = `2026-${mes}-${String(DIA_VENCIMENTO).padStart(2, "0")}`;
+      const pago = MESES_PAGOS.includes(m);
       const status = pago ? "pago" : venc < hoje ? "vencido" : "aberto";
       const multa = status === "vencido" ? MENSALIDADE * 0.02 : 0;
       const ra = String(user.ra || "0").replace(/\D/g, "").padStart(7, "0");
