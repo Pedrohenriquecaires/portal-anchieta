@@ -33,6 +33,16 @@ async function authorize(client, actor, change) {
     case "atividades":
     case "faltas":
       return ACADEMIC_WRITE.includes(role) ? { ok: true } : { ok: false, reason: "Ação permitida só para professores." };
+    case "chamados": {
+      if (role === "professor") return { ok: false, reason: "Chamados são atendidos pela coordenação." };
+      if (op === "delete") return { ok: false, reason: "Chamado não pode ser apagado." };
+      if (item?.alunoId !== actor.sub) return { ok: false, reason: "Chamado de outro aluno." };
+      // Aluno abre o chamado; quem muda status/resposta é a coordenação
+      const { rows } = await client.query("SELECT 1 FROM chamados WHERE id = $1", [id]);
+      if (rows.length) return { ok: false, reason: "Só a coordenação altera um chamado aberto." };
+      if (item.status && item.status !== "aberto") return { ok: false, reason: "Chamado novo começa como aberto." };
+      return { ok: true };
+    }
     case "entregas":
       if (role === "aluno") {
         if (op === "delete") return { ok: false, reason: "Entrega não pode ser removida pelo aluno." };

@@ -10,6 +10,7 @@ const TABLES = [
   ["atividades", "Atividades"],
   ["entregas", "Entregas"],
   ["faltas", "Faltas"],
+  ["chamados", "Chamados"],
   ["log_alteracoes", "Log de alterações"]
 ];
 

@@ -88,3 +88,9 @@ Navegador (HTML/CSS/JS)  ──►  API (Vercel Functions, pasta api/)  ──�
 3. Opcional: crie a variável `SESSION_SECRET` com um texto aleatório, para assinar os tokens.
 
 Para mudar os dados iniciais, edite `api/_lib/seed.js`, publique e clique em **Banco de dados → Restaurar banco**.
+
+### Ações rápidas do aluno (`servicos.js`)
+- **2ª via de boleto:** mensalidades do semestre (paga, vencida com multa, a vencer), botão para copiar a linha digitável e 2ª via para imprimir ou salvar em PDF. Valores fictícios, marcados como demonstração.
+- **Grade de horários:** montada a partir das turmas em que o aluno está matriculado, com "próxima aula" e exportação `.ics` para Google Agenda e Outlook (aulas semanais até o fim do semestre, com lembrete de 30 min).
+- **Documentos:** declaração de matrícula, atestado de frequência e boletim parcial, gerados com os dados do banco, com código de verificação e opção de imprimir ou salvar em PDF.
+- **Suporte:** o aluno abre um chamado com protocolo, que fica salvo na tabela `chamados`. A coordenação atende pelo **Painel Coordenação** ("Assumir atendimento" / "Marcar como resolvido"), e o aluno vê o status mudar em tempo real.

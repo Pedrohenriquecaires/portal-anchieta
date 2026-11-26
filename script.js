@@ -1100,8 +1100,11 @@ const actionMessages = {
   suporte: "Abrindo a central de suporte..."
 };
 
+// As ações rápidas do aluno (2ª via, grade, documentos, suporte) estão em servicos.js.
+// Este aviso só aparece se o servicos.js não tiver carregado.
 document.querySelectorAll(".quick-action").forEach((button) => {
   button.addEventListener("click", () => {
+    if (window.SERVICOS) return;
     showSnackbar(actionMessages[button.dataset.action] || "Ação selecionada.");
   });
 });

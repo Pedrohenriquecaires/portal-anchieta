@@ -152,6 +152,22 @@ CREATE TABLE IF NOT EXISTS entregas (
   atualizado_em TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- Chamados de suporte abertos pelos alunos (atendidos pela coordenação)
+CREATE TABLE IF NOT EXISTS chamados (
+  id            TEXT PRIMARY KEY,
+  protocolo     TEXT NOT NULL DEFAULT '',
+  aluno_id      TEXT NOT NULL REFERENCES usuarios (id) ON DELETE CASCADE,
+  categoria     TEXT NOT NULL DEFAULT 'Outro',
+  assunto       TEXT NOT NULL,
+  mensagem      TEXT NOT NULL DEFAULT '',
+  status        TEXT NOT NULL DEFAULT 'aberto' CHECK (status IN ('aberto', 'em_atendimento', 'resolvido')),
+  resposta      TEXT NOT NULL DEFAULT '',
+  criado_em     TIMESTAMPTZ,
+  extra         JSONB NOT NULL DEFAULT '{}'::jsonb,
+  atualizado_em TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS chamados_aluno_idx ON chamados (aluno_id);
+
 -- Log de auditoria: cada alteração vira um evento (também usado na sincronização)
 CREATE TABLE IF NOT EXISTS log_alteracoes (
   seq        BIGSERIAL PRIMARY KEY,
@@ -278,10 +294,25 @@ export const COLLECTIONS = {
       texto: ["texto", "text"],
       createdAt: ["criado_em", "ts"]
     }
+  },
+  chamados: {
+    table: "chamados",
+    label: "Chamados",
+    fields: {
+      id: ["id", "text"],
+      protocolo: ["protocolo", "text"],
+      alunoId: ["aluno_id", "fk"],
+      categoria: ["categoria", "text"],
+      assunto: ["assunto", "text"],
+      mensagem: ["mensagem", "text"],
+      status: ["status", "text"],
+      resposta: ["resposta", "text"],
+      createdAt: ["criado_em", "ts"]
+    }
   }
 };
 
-export const COLLECTION_ORDER = ["users", "turmas", "atividades", "provas", "notas", "faltas", "entregas"];
+export const COLLECTION_ORDER = ["users", "turmas", "atividades", "provas", "notas", "faltas", "entregas", "chamados"];
 
 function toColumnValue(value, type) {
   if (value === undefined) return undefined;
@@ -428,6 +459,10 @@ export function summarize(collection, item, op) {
       return `Falta em ${item.data || ""}`.trim();
     case "entregas":
       return "Entrega de atividade";
+    case "chamados": {
+      const st = { aberto: "aberto", em_atendimento: "em atendimento", resolvido: "resolvido" }[item.status] || "";
+      return `${item.protocolo || "Chamado"} · ${item.assunto || ""}${st ? ` (${st})` : ""}`;
+    }
     default:
       return "";
   }
@@ -475,7 +510,7 @@ export async function seedDatabase(client, actor = null) {
 
 export async function wipeDatabase(client) {
   await client.query(
-    "TRUNCATE entregas, faltas, notas, provas, atividades, turma_alunos, turmas, usuarios RESTART IDENTITY CASCADE"
+    "TRUNCATE chamados, entregas, faltas, notas, provas, atividades, turma_alunos, turmas, usuarios RESTART IDENTITY CASCADE"
   );
 }
 

@@ -21,7 +21,7 @@
 
   const API = "api";
   const VERSION = "20261126-db";
-  const SCRIPTS = ["academic.js", "script.js", "slides.js", "effects.js"];
+  const SCRIPTS = ["academic.js", "script.js", "servicos.js", "slides.js", "effects.js"];
   const TOKEN_KEY = "educonnect-db-token";
   const SESSION_KEY = "educonnect-session-v2";
   const POLL_MS = 3000;
@@ -33,10 +33,11 @@
     atividades: "educonnect-atividades-v1",
     faltas: "educonnect-faltas-v1",
     provas: "educonnect-provas-v1",
-    entregas: "educonnect-entregas-v1"
+    entregas: "educonnect-entregas-v1",
+    chamados: "educonnect-chamados-v1"
   };
   const COLLECTION_BY_KEY = Object.fromEntries(Object.entries(KEYS).map(([c, k]) => [k, c]));
-  const ORDER = ["users", "turmas", "atividades", "provas", "notas", "faltas", "entregas"];
+  const ORDER = ["users", "turmas", "atividades", "provas", "notas", "faltas", "entregas", "chamados"];
 
   const LABELS = {
     users: { nome: "Usuário", icon: "person" },
@@ -46,6 +47,7 @@
     atividades: { nome: "Atividade", icon: "assignment" },
     faltas: { nome: "Falta", icon: "event_busy" },
     entregas: { nome: "Entrega", icon: "upload_file" },
+    chamados: { nome: "Chamado", icon: "support_agent" },
     sistema: { nome: "Sistema", icon: "database" }
   };
 
@@ -547,7 +549,7 @@
             <li><span class="material-symbols-outlined" aria-hidden="true">touch_app</span><strong>Portal</strong><small>HTML + CSS + JS (Material/Aurora)</small></li>
             <li><span class="material-symbols-outlined" aria-hidden="true">api</span><strong>API</strong><small>Vercel Functions · /api/login, /api/sync, /api/state</small></li>
             <li><span class="material-symbols-outlined" aria-hidden="true">lock</span><strong>Segurança</strong><small>Senha com bcrypt · token assinado · permissão por cargo</small></li>
-            <li><span class="material-symbols-outlined" aria-hidden="true">database</span><strong>PostgreSQL</strong><small>9 tabelas relacionais com chaves estrangeiras + log de auditoria</small></li>
+            <li><span class="material-symbols-outlined" aria-hidden="true">database</span><strong>PostgreSQL</strong><small>10 tabelas relacionais com chaves estrangeiras + log de auditoria</small></li>
           </ol>
         </article>
 
