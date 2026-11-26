@@ -785,7 +785,56 @@ function updateAdminMetrics() {
   setText("adminMetricAdmins", admins);
 }
 
+/* Filtro da aba Usuários (coordenação): por cargo + busca por nome/RA */
+const usersFilter = { role: "todos", q: "" };
+const USER_FILTERS = [
+  { role: "todos", label: "Todos", icon: "groups" },
+  { role: "admin", label: "Coordenação", icon: "account_balance" },
+  { role: "professor", label: "Professores", icon: "co_present" },
+  { role: "aluno", label: "Alunos", icon: "school" }
+];
+
+function ensureUsersToolbar() {
+  const tableCard = document.getElementById("usersTable")?.closest(".table-card");
+  if (!tableCard || document.getElementById("usersToolbar")) return;
+  const bar = document.createElement("div");
+  bar.className = "users-toolbar";
+  bar.id = "usersToolbar";
+  bar.innerHTML = `
+    <div class="users-toolbar__chips" role="group" aria-label="Filtrar usuários por cargo">
+      ${USER_FILTERS.map(
+        (f) => `
+        <button class="chip chip--action users-filter" type="button" data-user-filter="${f.role}" aria-pressed="false">
+          <span class="material-symbols-outlined" aria-hidden="true">${f.icon}</span>
+          ${f.label}
+          <span class="users-filter__count" data-user-count="${f.role}">0</span>
+        </button>`
+      ).join("")}
+    </div>
+    <label class="field users-toolbar__search">
+      <span class="visually-hidden">Buscar por nome ou RA</span>
+      <span class="field__control">
+        <span class="material-symbols-outlined field__leading-icon" aria-hidden="true">search</span>
+        <input class="field__input field__input--icon" id="usersSearch" type="search" placeholder="Buscar por nome ou RA" autocomplete="off" />
+      </span>
+    </label>
+    <p class="users-toolbar__status muted" id="usersFilterStatus" aria-live="polite"></p>`;
+  tableCard.before(bar);
+
+  bar.querySelectorAll("[data-user-filter]").forEach((btn) =>
+    btn.addEventListener("click", () => {
+      usersFilter.role = btn.dataset.userFilter;
+      renderUsersTable();
+    })
+  );
+  bar.querySelector("#usersSearch").addEventListener("input", (e) => {
+    usersFilter.q = e.target.value;
+    renderUsersTable();
+  });
+}
+
 function renderUsersTable() {
+  ensureUsersToolbar();
   // Cabeçalho na mesma ordem das colunas: RA antes do nome
   const usersHead = document.querySelector("#usersTable thead tr");
   if (usersHead && usersHead.dataset.order !== "ra-first") {
@@ -795,7 +844,37 @@ function renderUsersTable() {
   const tbody = document.getElementById("usersTableBody");
   if (!tbody) return;
 
-  tbody.innerHTML = users
+  // Aplica o filtro de cargo e a busca
+  const termo = usersFilter.q.trim().toLowerCase();
+  const termoDigitos = termo.replace(/\D/g, "");
+  const porBusca = users.filter(
+    (u) =>
+      !termo ||
+      String(u.nome || "").toLowerCase().includes(termo) ||
+      (termoDigitos && String(u.ra || "").replace(/\D/g, "").includes(termoDigitos))
+  );
+  const visiveis = porBusca.filter((u) => usersFilter.role === "todos" || u.role === usersFilter.role);
+
+  document.querySelectorAll("[data-user-filter]").forEach((btn) => {
+    const ativo = btn.dataset.userFilter === usersFilter.role;
+    btn.classList.toggle("is-selected", ativo);
+    btn.setAttribute("aria-pressed", ativo ? "true" : "false");
+  });
+  document.querySelectorAll("[data-user-count]").forEach((el) => {
+    const role = el.dataset.userCount;
+    el.textContent = role === "todos" ? porBusca.length : porBusca.filter((u) => u.role === role).length;
+  });
+  const status = document.getElementById("usersFilterStatus");
+  if (status) status.textContent = `Mostrando ${visiveis.length} de ${users.length} usuário(s)`;
+
+  if (!visiveis.length) {
+    tbody.innerHTML = `<tr><td colspan="5" class="users-empty">
+      <span class="material-symbols-outlined" aria-hidden="true">person_search</span>
+      Nenhum usuário encontrado com esse filtro.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = visiveis
     .map(
       (user) => `
       <tr>

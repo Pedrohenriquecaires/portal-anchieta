@@ -90,3 +90,79 @@
 .roster-remove .material-symbols-outlined {
   font-size: 18px;
 }
+
+/* ============ Filtro da aba Usuários ============ */
+
+.users-toolbar {
+  display: grid;
+  grid-template-columns: 1fr minmax(220px, 320px);
+  gap: 12px 16px;
+  align-items: center;
+}
+
+.users-toolbar__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.users-filter {
+  height: 38px;
+  padding: 0 14px 0 12px;
+  font-size: 0.84rem;
+  gap: 8px;
+}
+
+.users-filter .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.users-filter__count {
+  min-width: 22px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-align: center;
+  background: var(--md-surface-3);
+  color: var(--md-on-primary-container);
+}
+
+.users-filter.is-selected {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+}
+
+.users-filter.is-selected .users-filter__count {
+  background: color-mix(in srgb, var(--btn-primary-fg) 14%, transparent);
+  color: inherit;
+}
+
+.users-toolbar__search .field__input {
+  min-height: 40px;
+  border-radius: 999px;
+}
+
+.users-toolbar__status {
+  grid-column: 1 / -1;
+  margin: -4px 0 0;
+  font-size: 0.8rem;
+}
+
+.users-empty {
+  padding: 32px 16px !important;
+  text-align: center !important;
+  color: var(--md-text-muted);
+}
+
+.users-empty .material-symbols-outlined {
+  display: block;
+  margin: 0 auto 8px;
+  font-size: 32px;
+}
+
+@media (max-width: 720px) {
+  .users-toolbar {
+    grid-template-columns: 1fr;
+  }
+}
