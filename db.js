@@ -52,13 +52,37 @@
   };
 
   const rawSetItem = Storage.prototype.setItem;
+  const rawRemoveItem = Storage.prototype.removeItem;
+  const rawGetItem = Storage.prototype.getItem;
+
+  /* Modo apresentação (slides "Antes × Depois"):
+     index.html?demo=aluno|admin|professor&view=<tela>&focus=<seletor>&theme=light&dialog=delete
+     → entra sozinho, mostra a tela real e fica SOMENTE LEITURA:
+       não grava nada e não mexe na sessão/tema de quem está apresentando. */
+  const PARAMS = new URLSearchParams(location.search);
+  const DEMO = PARAMS.get("demo");
+  if (DEMO) {
+    document.documentElement.classList.add("is-demo");
+    const demoStyle = document.createElement("style");
+    demoStyle.textContent = ".is-demo .fab { display: none !important; }";
+    document.head.appendChild(demoStyle);
+    const isPortalKey = (k) => typeof k === "string" && k.startsWith("educonnect-");
+    Storage.prototype.removeItem = function (key) {
+      if (this === localStorage && isPortalKey(key)) return;
+      return rawRemoveItem.call(this, key);
+    };
+    Storage.prototype.getItem = function (key) {
+      if (this === localStorage && (key === "educonnect-session-v2" || key === "educonnect-db-token")) return null;
+      return rawGetItem.call(this, key);
+    };
+  }
 
   const state = {
     online: false,
     status: "connecting", // connecting | online | syncing | offline | local
     info: null,
     seq: 0,
-    token: localStorage.getItem(TOKEN_KEY) || "",
+    token: DEMO ? "" : localStorage.getItem(TOKEN_KEY) || "",
     snapshots: {},
     dirty: new Set(),
     outbox: [],
@@ -215,6 +239,7 @@
   /* ---------------- Envio de alterações ---------------- */
 
   Storage.prototype.setItem = function (key, value) {
+    if (DEMO && this === localStorage && String(key).startsWith("educonnect-")) return; // somente leitura
     rawSetItem.call(this, key, value);
     if (this !== localStorage || !state.online || state.applyingRemote) return;
     const collection = COLLECTION_BY_KEY[key];
@@ -687,6 +712,36 @@
     }
   }
 
+  /* ---------------- Modo apresentação ---------------- */
+
+  function runDemo() {
+    const ids = { aluno: "u-aluno", admin: "u-admin", professor: "u-prof" };
+    const users = readLocal("users");
+    const user = users.find((u) => u.id === ids[DEMO]) || users.find((u) => u.role === DEMO);
+    if (!user || typeof window.enterApp !== "function") return;
+
+    const hideSnack = () => document.getElementById("snackbar")?.classList.remove("is-open");
+    window.enterApp(user);
+    hideSnack();
+
+    const theme = PARAMS.get("theme");
+    if (theme && typeof window.applyTheme === "function") window.applyTheme(theme);
+
+    const view = PARAMS.get("view");
+    if (view && typeof window.setActiveView === "function") window.setActiveView(view);
+
+    setTimeout(() => {
+      hideSnack();
+      const focus = PARAMS.get("focus");
+      if (focus) document.querySelector(focus)?.scrollIntoView({ block: "center" });
+      else window.scrollTo(0, 0);
+      if (PARAMS.get("dialog") === "delete") {
+        // Abre a confirmação real de exclusão (nada é apagado: a página está em modo leitura)
+        document.querySelector(".view.is-active [data-remove-user], .view.is-active [data-unlink-aluno]")?.click();
+      }
+    }, 450);
+  }
+
   /* ---------------- Carregamento dos scripts do portal ---------------- */
 
   function loadScript(src) {
@@ -732,5 +787,6 @@
     bindBancoUi();
     setStatus(state.status);
     if (state.online) state.pollTimer = setTimeout(poll, POLL_MS);
+    if (DEMO) runDemo();
   });
 })();

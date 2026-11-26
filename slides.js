@@ -9,6 +9,41 @@
   if (!root) return;
 
   const slides = Array.from(root.querySelectorAll(".slide"));
+
+  /* Dentro do próprio modo apresentação não carrega os slides (evita iframes aninhados). */
+  if (new URLSearchParams(location.search).get("demo")) {
+    root.querySelectorAll("iframe").forEach((f) => f.removeAttribute("src"));
+    return;
+  }
+
+  /* Selo ANTES/DEPOIS no canto inferior direito (não cobre a barra do portal) */
+  const chromeStyle = document.createElement("style");
+  chromeStyle.textContent = `
+    .slide__chrome { top: auto; left: auto; right: 16px; bottom: 16px; transform: none; }
+    .slide-teleprompter { bottom: 72px; }
+  `;
+  document.head.appendChild(chromeStyle);
+
+    /* DEPOIS = o portal REAL ao vivo (com banco, ações rápidas e dados atuais), em modo
+     somente leitura. Cada slide abre a tela correspondente ao ANTES. */
+  const DEPOIS_REAL = {
+    1: { src: "demo=aluno&view=dashboard", cue: "A mesma tela de dashboard — agora o portal real: métricas, agenda, ações rápidas e dados vindos do banco." },
+    3: { src: "demo=aluno&view=aluno-boletim", cue: "A mesma seção de notas — boletim real por disciplina, com média e situação calculadas." },
+    5: { src: "demo=aluno&view=dashboard&focus=.quick-grid", cue: "As mesmas ações rápidas — agora funcionam: 2ª via, grade com agenda, documentos e suporte." },
+    7: { src: "demo=aluno&view=perfil", cue: "O mesmo perfil — campos com rótulo, validação, loading no botão e Snackbar de confirmação." },
+    9: { src: "demo=aluno&view=dashboard", cue: "O mesmo dashboard no celular — menu recolhido, cards em coluna, sem rolagem horizontal." },
+    11: { src: "demo=aluno&view=dashboard&theme=light", cue: "A mesma tela no tema claro — o escuro é o padrão; os dois saem dos mesmos tokens." },
+    13: { src: "demo=admin&view=admin-home", cue: "O menu muda por cargo — coordenação vê usuários, turmas, chamados e o banco de dados." },
+    15: { src: "demo=admin&view=usuarios&dialog=delete", cue: "Ação destrutiva com confirmação — o Dialog aparece antes de qualquer exclusão." }
+  };
+  slides.forEach((slide) => {
+    const cfg = DEPOIS_REAL[Number(slide.dataset.slide)];
+    const frame = slide.querySelector("iframe.slide__screen");
+    if (!cfg || !frame) return;
+    frame.setAttribute("src", `index.html?${cfg.src}&v=apresentacao`);
+    frame.setAttribute("loading", "lazy");
+    slide.dataset.cue = cfg.cue;
+  });
   const counter = document.getElementById("slidesCounter");
   const btnPrev = document.getElementById("slidesPrev");
   const btnNext = document.getElementById("slidesNext");
