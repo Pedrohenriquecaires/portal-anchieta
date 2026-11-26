@@ -1,24 +1,3 @@
-/* ============================================================
-   Portal Anchieta — Material Design 3 + estilo Aurora (DESIGN.md)
-   ------------------------------------------------------------
-   1. Tokens (cor, tipografia, forma, espaço, elevação, movimento)
-   2. Base e acessibilidade
-   3. Shell: drawer, app bar
-   4. Componentes: botões, chips, avatar, cards, campos, alertas
-   5. Views: dashboard, listas, formulários, tabelas, auditoria
-   6. Overlays: dialog, snackbar, FAB, notificações
-   7. Login
-   8. Efeitos: reveal, ripple, spotlight
-   9. Slides (apresentação)
-   10. Responsivo + reduced motion
-   Regra: as views só usam tokens — nada de cor fixa espalhada.
-   ============================================================ */
-
-/* ============ 1. TOKENS ============ */
-
-/* Variante CLARA ("luz do dia") — mesmas regras do sistema Aurora:
-   texto acromático, ação primária em pílula sólida (aqui escura),
-   acento azul→violeta usado com parcimônia. */
 :root {
   color-scheme: light;
 
@@ -4188,3 +4167,11 @@ body.slides-open {
 .split-grid > * {
   min-width: 0;
 }
+
+.brand-mark__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+.brand-mark:has(.brand-mark__img) { background: none; }
