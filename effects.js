@@ -309,9 +309,14 @@
     const attr = Object.keys(DESTRUCTIVE).find((a) => button.hasAttribute(a));
     if (attr === "data-reset-db") return DESTRUCTIVE[attr];
     const row = button.closest("tr, li, article");
+    // Nome da pessoa/item (a 1ª coluna agora é o RA, então ignora células com <code>)
+    const nameCell = row
+      ? [...row.querySelectorAll("td")].find((td) => !td.querySelector("code") && td.textContent.trim() && td.textContent.trim() !== "—")
+      : null;
     const title =
+      row?.querySelector(".roster-nome")?.textContent ||
       row?.querySelector("h3")?.textContent ||
-      row?.querySelector("td")?.textContent ||
+      nameCell?.textContent ||
       row?.querySelector("span")?.textContent ||
       "";
     const clean = title.trim().replace(/\s+/g, " ");

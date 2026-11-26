@@ -457,6 +457,31 @@ const ACADEMIC = (() => {
     return typeof users !== "undefined" ? users : [];
   }
 
+  /* RA e nome em colunas separadas */
+  function alunoRa(id) {
+    const u = findUser(id);
+    return u && u.ra ? u.ra : "—";
+  }
+
+  function alunoNome(id) {
+    const u = findUser(id);
+    return u ? u.nome : "—";
+  }
+
+  function mediaChip(media) {
+    if (media === null || media === undefined || Number.isNaN(media)) return '<span class="chip">—</span>';
+    const tone = media >= 6 ? "chip--success" : media >= 4 ? "chip--warning" : "chip--error";
+    return `<span class="chip ${tone}">${formatNota(media)}</span>`;
+  }
+
+  // Carrega o CSS das tabelas de alunos (colunas fixas: RA | Nome | ...)
+  if (!document.querySelector('link[href^="tabelas.css"]')) {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "tabelas.css?v=20261126";
+    document.head.appendChild(link);
+  }
+
   function findUser(id) {
     return getUsers().find((u) => u.id === id) || null;
   }
@@ -840,18 +865,27 @@ const ACADEMIC = (() => {
     list.innerHTML = minhas
       .map((turma) => {
         const alunosHtml = turma.alunosIds.length
-          ? `<ul class="mini-list">${turma.alunosIds
-              .map((id) => {
-                const aluno = findUser(id);
-                if (!aluno) return "";
-                const media = mediaTurmaAluno(turma.id, id);
-                return `<li>
-                  <span>${aluno.nome} · RA ${aluno.ra}</span>
-                  <span class="chip">Média ${formatNota(media)}</span>
-                  <button class="btn btn--text" type="button" data-unlink-aluno="${turma.id}:${id}">Remover</button>
-                </li>`;
-              })
-              .join("")}</ul>`
+          ? `<div class="table-wrap roster-wrap">
+              <table class="roster-table">
+                <colgroup><col class="roster-col-ra" /><col /><col class="roster-col-media" /><col class="roster-col-acao" /></colgroup>
+                <thead><tr><th scope="col">RA</th><th scope="col">Nome</th><th scope="col">Média</th><th scope="col">Remover</th></tr></thead>
+                <tbody>${turma.alunosIds
+                  .map((id) => {
+                    const aluno = findUser(id);
+                    if (!aluno) return "";
+                    const media = mediaTurmaAluno(turma.id, id);
+                    return `<tr>
+                      <td><code>${aluno.ra || "—"}</code></td>
+                      <td class="roster-nome" title="${aluno.nome}">${aluno.nome}</td>
+                      <td>${mediaChip(media)}</td>
+                      <td><button class="btn btn--text roster-remove" type="button" data-unlink-aluno="${turma.id}:${id}"
+                        aria-label="Remover ${aluno.nome} da turma">
+                        <span class="material-symbols-outlined" aria-hidden="true">person_remove</span>Remover</button></td>
+                    </tr>`;
+                  })
+                  .join("")}</tbody>
+              </table>
+            </div>`
           : `<p class="muted">Nenhum aluno vinculado ainda.</p>`;
 
         return `
@@ -946,6 +980,7 @@ const ACADEMIC = (() => {
           <thead>
             <tr>
               <th>Turma</th>
+              <th>RA</th>
               <th>Aluno</th>
               <th>Tipo</th>
               <th>Nota</th>
@@ -961,7 +996,8 @@ const ACADEMIC = (() => {
                 const turma = turmas.find((t) => t.id === n.turmaId);
                 return `<tr>
                   <td>${turma ? `${turma.nome} (${turma.codigo})` : "—"}</td>
-                  <td>${userLabel(n.alunoId)}</td>
+                  <td><code>${alunoRa(n.alunoId)}</code></td>
+                  <td>${alunoNome(n.alunoId)}</td>
                   <td><span class="chip chip--soft">${n.tipo || "P1"}</span></td>
                   <td><strong>${formatNota(n.valor)}</strong></td>
                   <td>${new Date(n.createdAt).toLocaleString("pt-BR")}</td>
@@ -1009,13 +1045,19 @@ const ACADEMIC = (() => {
           <p class="muted">Prazo: ${a.prazo ? new Date(a.prazo + "T12:00:00").toLocaleDateString("pt-BR") : "não definido"}</p>
           ${
             qtdEntregas
-              ? `<ul class="mini-list">${entregas
-                  .filter((e) => e.atividadeId === a.id)
-                  .map(
-                    (e) =>
-                      `<li><span>${userLabel(e.alunoId)}</span><span class="muted">${new Date(e.createdAt).toLocaleString("pt-BR")}</span></li>`
-                  )
-                  .join("")}</ul>`
+              ? `<div class="table-wrap roster-wrap">
+                  <table class="roster-table">
+                    <colgroup><col class="roster-col-ra" /><col /><col class="roster-col-data" /></colgroup>
+                    <thead><tr><th scope="col">RA</th><th scope="col">Aluno</th><th scope="col">Entregue em</th></tr></thead>
+                    <tbody>${entregas
+                      .filter((e) => e.atividadeId === a.id)
+                      .map(
+                        (e) =>
+                          `<tr><td><code>${alunoRa(e.alunoId)}</code></td><td class="roster-nome">${alunoNome(e.alunoId)}</td><td class="muted">${new Date(e.createdAt).toLocaleString("pt-BR")}</td></tr>`
+                      )
+                      .join("")}</tbody>
+                  </table>
+                </div>`
               : `<p class="muted">Nenhuma entrega ainda.</p>`
           }
         </article>`;
@@ -1104,7 +1146,7 @@ const ACADEMIC = (() => {
       <div class="table-wrap">
         <table class="audit-table">
           <thead>
-            <tr><th>Data</th><th>Turma</th><th>Aluno</th><th>Motivo</th><th></th></tr>
+            <tr><th>Data</th><th>Turma</th><th>RA</th><th>Aluno</th><th>Motivo</th><th></th></tr>
           </thead>
           <tbody>
             ${lista
@@ -1113,7 +1155,8 @@ const ACADEMIC = (() => {
                 return `<tr>
                   <td>${new Date(f.data + "T12:00:00").toLocaleDateString("pt-BR")}</td>
                   <td>${turma ? turma.codigo : "—"}</td>
-                  <td>${userLabel(f.alunoId)}</td>
+                  <td><code>${alunoRa(f.alunoId)}</code></td>
+                  <td>${alunoNome(f.alunoId)}</td>
                   <td>${f.motivo || "—"}</td>
                   <td><button class="btn btn--text" type="button" data-remove-falta="${f.id}">Excluir</button></td>
                 </tr>`;

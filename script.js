@@ -786,6 +786,12 @@ function updateAdminMetrics() {
 }
 
 function renderUsersTable() {
+  // Cabeçalho na mesma ordem das colunas: RA antes do nome
+  const usersHead = document.querySelector("#usersTable thead tr");
+  if (usersHead && usersHead.dataset.order !== "ra-first") {
+    usersHead.innerHTML = "<th>RA</th><th>Nome</th><th>Cargo</th><th>CPF</th><th>Ações</th>";
+    usersHead.dataset.order = "ra-first";
+  }
   const tbody = document.getElementById("usersTableBody");
   if (!tbody) return;
 
@@ -793,8 +799,8 @@ function renderUsersTable() {
     .map(
       (user) => `
       <tr>
-        <td>${user.nome}</td>
         <td>${user.role === "admin" ? "—" : `<code>${user.ra || "—"}</code>`}</td>
+        <td>${user.nome}</td>
         <td><span class="role-badge role-badge--${user.role}">${ROLE_LABELS[user.role]}</span></td>
         <td>${user.role === "admin" ? "—" : maskCpf(user.cpf)}</td>
         <td>

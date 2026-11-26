@@ -560,7 +560,7 @@
           </div>
           <div class="table-wrap">
             <table class="audit-table db-boletim">
-              <thead><tr><th>Aluno</th><th>RA</th><th>Turma</th><th>Média</th><th>Notas</th><th>Faltas</th></tr></thead>
+              <thead><tr><th>RA</th><th>Aluno</th><th>Turma</th><th>Média</th><th>Notas</th><th>Faltas</th></tr></thead>
               <tbody id="bancoBoletim"></tbody>
             </table>
           </div>
@@ -666,7 +666,7 @@
             const media = b.media === null ? null : Number(b.media);
             const chip =
               media === null ? "chip" : media >= 6 ? "chip chip--success" : media >= 4 ? "chip chip--warning" : "chip chip--error";
-            return `<tr><td>${escapeHtml(b.aluno)}</td><td><code>${escapeHtml(b.ra)}</code></td><td>${escapeHtml(
+            return `<tr><td><code>${escapeHtml(b.ra)}</code></td><td>${escapeHtml(b.aluno)}</td><td>${escapeHtml(
               b.turma
             )}</td><td><span class="${chip}">${fmt(media)}</span></td><td>${b.qtd_notas}</td><td>${b.faltas}</td></tr>`;
           })

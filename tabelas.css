@@ -1,0 +1,92 @@
+/* ============================================================
+   Tabelas de alunos com colunas fixas — RA | Nome | Média | Ação
+   (carregado pelo academic.js; usa os tokens do styles.css)
+   ============================================================ */
+
+.roster-wrap {
+  margin-top: var(--space-3, 12px);
+  border: 1px solid var(--md-outline-variant);
+  border-radius: var(--radius-md, 12px);
+  overflow-x: auto;
+}
+
+.roster-table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  table-layout: fixed; /* colunas sempre alinhadas, não importa o tamanho do nome */
+}
+
+.roster-col-ra { width: 120px; }
+.roster-col-media { width: 110px; }
+.roster-col-acao { width: 130px; }
+.roster-col-data { width: 190px; }
+
+.roster-table th,
+.roster-table td {
+  padding: 10px 16px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--md-outline-variant);
+  font-size: 0.9rem;
+}
+
+.roster-table th {
+  background: var(--md-surface-2);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--md-text-muted);
+}
+
+.roster-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.roster-table tbody tr {
+  transition: background-color var(--transition, 0.2s);
+}
+
+.roster-table tbody tr:hover {
+  background: var(--md-surface-2);
+}
+
+.roster-table code {
+  font-size: 0.82rem;
+}
+
+.roster-nome {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.roster-table th:nth-child(3),
+.roster-table th:nth-child(4),
+.roster-table td:nth-child(3),
+.roster-table td:nth-child(4) {
+  text-align: center;
+}
+
+/* Tabela de entregas: data alinhada à esquerda */
+.roster-table:has(.roster-col-data) th:nth-child(3),
+.roster-table:has(.roster-col-data) td:nth-child(3) {
+  text-align: left;
+}
+
+.roster-remove {
+  min-height: 34px;
+  padding-inline: 12px;
+  color: var(--md-error);
+}
+
+.roster-remove:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--md-error) 12%, transparent);
+  padding-inline: 14px;
+}
+
+.roster-remove .material-symbols-outlined {
+  font-size: 18px;
+}
